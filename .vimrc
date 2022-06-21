@@ -12,16 +12,19 @@ set statusline+=%m      "modified flag
 "======================"
 " Vundle configuration "
 "======================"
+" Install plugins that come from github.  Once Vundle is installed, these can be
+" installed with :PluginInstall
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 if isdirectory(expand('$HOME/.vim/bundle/Vundle.vim'))
 call vundle#begin()
 " Required
 Plugin 'gmarik/vundle'
-" Install plugins that come from github.  Once Vundle is installed, these can be
-" installed with :PluginInstall
 
+" No longer using syntastic.
 " Plugin 'vim-syntastic/syntastic'
+
+" Asynchronous linter.
 Plugin 'dense-analysis/ale'
 
 " To comment/uncomment.
@@ -30,23 +33,28 @@ Plugin 'preservim/nerdcommenter'
 " Fuzzy searcher.
 Plugin 'tpope/tpope-vim-abolish'
 
+" Maktaba: Google vimscript utility.
 Plugin 'google/vim-maktaba'
+
+" Codefmt: Google code formatter.
 Plugin 'google/vim-codefmt'
+
+" Glaive: Google vim config manager.
 Plugin 'google/vim-glaive'
 
 " Vim tmux navigator
 Plugin 'christoomey/vim-tmux-navigator'
+
+" FZF.
+Plugin 'junegunn/fzf'
+Plugin 'junegunn/fzf.vim'
+
 call vundle#end()
 call glaive#Install()
 else
 echomsg 'Vundle is not installed. You can install Vundle from'
     \ 'https://github.com/VundleVim/Vundle.vim'
 endif
-
-call plug#begin('~/.vim/plugged')
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
-call plug#end()
 
 filetype plugin indent on
 
@@ -168,7 +176,7 @@ let g:NERDSpaceDelims=1
 let g:NERDCommentEmptyLines = 1
 
 " Swap files: all in same directory
-set directory=/Users/x/.vim/swap/
+set directory=$VIM/swap/
 
 " Remove trailing whitespace.
 command FixWhitespace %s/\s\+$//e
@@ -179,11 +187,6 @@ set hidden
 
 " Search and replace does not use regex
 set nomagic
-
-" Set proper colorscheme for vimdiff.
-if &diff
-    colorscheme cypdiffcolorscheme
-endif
 
 " Enable spell checking.
 set spell spelllang=en_us
