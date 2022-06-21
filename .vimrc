@@ -6,13 +6,8 @@ set encoding=utf-8
 
 " Nice status line
 set statusline=%F       "tail of the filename
-" set statusline+=%h      "help file flag
-" set statusline+=%r      "read only flag
 set statusline+=%y      "filetype
 set statusline+=%m      "modified flag
-" set statusline+=%=      "left/right separator
-" set statusline+=%c,     "cursor column
-" set statusline+=%l/%L   "cursor line/total lines
 
 "======================"
 " Vundle configuration "
