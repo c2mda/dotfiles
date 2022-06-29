@@ -75,8 +75,8 @@ alias xclip='xclip -selection c'
 alias python=python3
 
 #€ On debian fd is renamed fdfind
-if ! [ $(which fd) ] && [ $(which fdfind) ]; then
-  alias fd=fdfind
+if [ -f /usr/bin/fdfind ] && ! [ -f /opt/homebrew/bin/fd ]; then
+  alias fd=/usr/bin/fdfind
 fi
 
 # Fd does not respect .gitignore
