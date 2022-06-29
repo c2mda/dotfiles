@@ -9,6 +9,9 @@ set statusline=%F       "tail of the filename
 set statusline+=%y      "filetype
 set statusline+=%m      "modified flag
 
+" Swap files: all in same directory
+set directory=$HOME/.vim/swap/
+
 "======================"
 " Vundle configuration "
 "======================"
@@ -174,9 +177,6 @@ let g:NERDSpaceDelims=1
 
 " Allow commenting empty lines.
 let g:NERDCommentEmptyLines = 1
-
-" Swap files: all in same directory
-set directory=$VIM/swap/
 
 " Remove trailing whitespace.
 command FixWhitespace %s/\s\+$//e
