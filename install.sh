@@ -3,7 +3,7 @@ folder=$(dirname -- "$0";)
 maybe_copy () {
   from=$1
   to=$2
-  if [ -e $to] || [ -L $to ]; then
+  if [ -e $to ] || [ -L $to ]; then
     echo "File $to already exists, comparing."
     if ! cmp $from $to >/dev/null 2>&1; then
       echo "Files $from and $to differ, removing $to."
