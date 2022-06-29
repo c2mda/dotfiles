@@ -26,7 +26,13 @@ maybe_copy ${folder}/.inputrc ~/.inputrc
 maybe_copy ${folder}/.vimrc ~/.vimrc 
 maybe_copy ${folder}/.bashrc ~/.bashrc 
 
+# Setup vim swap folder.
+[ -d ~/.vim/swap ] && mkdir -p ~/.vim/swap
+
+# Install Vundle.
 if ! [ -d ~/.vim/bundle/Vundle.vim ]; then
   git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 fi
+
+# Install vim plugins.
 vim +PluginInstall +qall
