@@ -46,8 +46,15 @@ unset color_prompt force_color_prompt
 
 GREEN='\033[0;32m'
 RED='\033[0;31m'
+BLUE='\033[0;34m'
 NC='\033[0m' # No color.
-PS1="${RED}>>>${GREEN}\$(eval \"p_dir\") ${NC}\n "
+HOMEMACHINE="X-MBP-Perso-M1-2021.local"
+if ${HOSTNAME} == ${HOMEMACHINE}; then
+  PCOLORHN=${RED}
+else
+  PCOLORHN=${BLUE}
+fi
+PS1="${PCOLORHN}>>>${GREEN}\$(eval \"p_dir\") ${NC}\n "
 p_dir() {
   echo ${PWD}
 }
