@@ -25,3 +25,8 @@ git config --global user.name "Cyprien de Masson"
 maybe_copy ${folder}/.inputrc ~/.inputrc 
 maybe_copy ${folder}/.vimrc ~/.vimrc 
 maybe_copy ${folder}/.bashrc ~/.bashrc 
+
+if ! [ -d ~/.vim/bundle/Vundle.vim ]; then
+  git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+fi
+vim +PluginInstall +qall
