@@ -165,3 +165,7 @@ if [[ $OSTYPE == 'darwin'* ]]; then
   # Add keybase to PATH for git etc.
   export PATH=$PATH:/Applications/Keybase.app/Contents/SharedSupport/bin
 fi
+
+# Remove duplicate in PATH
+# https://unix.stackexchange.com/questions/40749/remove-duplicate-path-entries-with-awk-command
+PATH="$(perl -e 'print join(":", grep { not $seen{$_}++ } split(/:/, $ENV{PATH}))')"
