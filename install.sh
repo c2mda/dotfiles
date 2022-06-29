@@ -22,6 +22,6 @@ maybe_copy () {
 git config --global user.email "cyprien.de.masson@gmail.com"
 git config --global user.name "Cyprien de Masson"
 
-maybe_link ${folder}/.inputrc ~/.inputrc 
-maybe_link ${folder}/.vimrc ~/.vimrc 
-maybe_link ${folder}/.bashrc ~/.bashrc 
+maybe_copy ${folder}/.inputrc ~/.inputrc 
+maybe_copy ${folder}/.vimrc ~/.vimrc 
+maybe_copy ${folder}/.bashrc ~/.bashrc 
