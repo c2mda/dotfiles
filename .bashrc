@@ -70,47 +70,47 @@ alias python=python3
 #########################################################################
 ############################### FZF #####################################
 #########################################################################
+if [[ -h ~/.fzf ]]; then
+  # Fzf completion
+  [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
+  # Set FZF default search to be exact
+  export FZF_DEFAULT_OPTS="--exact"j
+  export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git --exclude /Library --exclude "Google Drive/.My Drive"'
+  export FZF_CTRL_T_COMMAND='fd --type f --hidden --follow --exclude .git --exclude /Library --exclude "Google Drive/.My Drive"'
+  export FZF_ALT_C_COMMAND='fd --type d --hidden --exclude .git --exclude /Library --exclude "Google Drive/.My Drive"'
 
-# Fzf completion
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+  # Adapted from fzf/0.30.0/shell/key-bindings.bash fzf-file-widget
+  # Assume bash version > 4.0
+  fzf-vi-widget() {
+    local selected="$(__fzf_select__)"
+    READLINE_LINE="vi $selected"
+  }
+  bind -m vi-command -x '"\C-e": fzf-vi-widget'
+  bind -m vi-insert -x '"\C-e": fzf-vi-widget'
 
-# Set FZF default search to be exact
-export FZF_DEFAULT_OPTS="--exact"
-export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git --exclude /Library --exclude "Google Drive/.My Drive"'
-export FZF_CTRL_T_COMMAND='fd --type f --hidden --follow --exclude .git --exclude /Library --exclude "Google Drive/.My Drive"'
-export FZF_ALT_C_COMMAND='fd --type d --hidden --exclude .git --exclude /Library --exclude "Google Drive/.My Drive"'
+  # Use C-f to cd to a directory with fzf.
+  # Default is Esc-c (\ec) but Esc doesn't work in bash vi mode.
+  bind -m vi-command '"\C-f": "\C-z\ec\C-z"'
+  bind -m vi-insert '"\C-f": "\C-z\ec\C-z"'
 
-# Adapted from fzf/0.30.0/shell/key-bindings.bash fzf-file-widget
-# Assume bash version > 4.0
-fzf-vi-widget() {
-  local selected="$(__fzf_select__)"
-  READLINE_LINE="vi $selected"
-}
-bind -m vi-command -x '"\C-e": fzf-vi-widget'
-bind -m vi-insert -x '"\C-e": fzf-vi-widget'
-
-# Use C-f to cd to a directory with fzf.
-# Default is Esc-c (\ec) but Esc doesn't work in bash vi mode.
-bind -m vi-command '"\C-f": "\C-z\ec\C-z"'
-bind -m vi-insert '"\C-f": "\C-z\ec\C-z"'
-
-# CTRL-G open FZF, and searches history for strings that look like a path.
-# Regex half-tested at https://regexr.com/4ljje
-__fzf_select_path__() {
-  local cmd="grep --only-matching --color=never -E -e '[[:alnum:].\`~_\/\-]*\/[[:alnum:].\`_\/\-]*' $HISTFILE"
-  eval "$cmd" | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse --bind=ctrl-z:ignore $FZF_DEFAULT_OPTS $FZF_CTRL_T_OPTS" $(__fzfcmd) -m "$@" | while read -r item; do
-    printf '%q ' "$item"
-  done
-  echo
-}
-fzf-path-widget(){
-  local selected="$(__fzf_select_path__)"
-  READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}$selected${READLINE_LINE:$READLINE_POINT}"
-  READLINE_POINT=$(( READLINE_POINT + ${#selected} ))
-}
-bind -m vi-command -x '"\C-g": fzf-path-widget'
-bind -m vi-insert -x '"\C-g": fzf-path-widget'
+  # CTRL-G open FZF, and searches history for strings that look like a path.
+  # Regex half-tested at https://regexr.com/4ljje
+  __fzf_select_path__() {
+    local cmd="grep --only-matching --color=never -E -e '[[:alnum:].\`~_\/\-]*\/[[:alnum:].\`_\/\-]*' $HISTFILE"
+    eval "$cmd" | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse --bind=ctrl-z:ignore $FZF_DEFAULT_OPTS $FZF_CTRL_T_OPTS" $(__fzfcmd) -m "$@" | while read -r item; do
+      printf '%q ' "$item"
+    done
+    echo
+  }
+  fzf-path-widget(){
+    local selected="$(__fzf_select_path__)"
+    READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}$selected${READLINE_LINE:$READLINE_POINT}"
+    READLINE_POINT=$(( READLINE_POINT + ${#selected} ))
+  }
+  bind -m vi-command -x '"\C-g": fzf-path-widget'
+  bind -m vi-insert -x '"\C-g": fzf-path-widget'
+fi
 
 #########################################################################
 ############################# VARIOUS ###################################
@@ -145,15 +145,16 @@ LS_COLORS="rs=0:di=01;36:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:c
 #########################################################################
 ############################# OSX ONLY ##################################
 #########################################################################
+if [[ $OSTYPE == 'darwin'* ]]; then
+  # Add brew path to PATH
+  eval $(/opt/homebrew/bin/brew shellenv)
 
-# Add brew path to PATH
-eval $(/opt/homebrew/bin/brew shellenv)
+  # The next line updates PATH for the Google Cloud SDK.
+  if [ -f '/Users/x/google-cloud-sdk/path.bash.inc' ]; then . '/Users/x/google-cloud-sdk/path.bash.inc'; fi
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/x/google-cloud-sdk/path.bash.inc' ]; then . '/Users/x/google-cloud-sdk/path.bash.inc'; fi
+  # The next line enables shell command completion for gcloud.
+  if [ -f '/Users/x/google-cloud-sdk/completion.bash.inc' ]; then . '/Users/x/google-cloud-sdk/completion.bash.inc'; fi
 
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/x/google-cloud-sdk/completion.bash.inc' ]; then . '/Users/x/google-cloud-sdk/completion.bash.inc'; fi
-
-# Add keybase to PATH for git etc.
-export PATH=$PATH:/Applications/Keybase.app/Contents/SharedSupport/bin
+  # Add keybase to PATH for git etc.
+  export PATH=$PATH:/Applications/Keybase.app/Contents/SharedSupport/bin
+fi
