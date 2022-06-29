@@ -75,7 +75,7 @@ alias xclip='xclip -selection c'
 alias python=python3
 
 #€ On debian fd is renamed fdfind
-if [ -n $(which fd) ] && [ ! -n $(which fdfind) ]; then
+if ! [ $(which fd) ] && [ $(which fdfind) ]; then
   alias fd=fdfind
 fi
 
