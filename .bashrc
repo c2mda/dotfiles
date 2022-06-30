@@ -94,9 +94,9 @@ fi
 
 # Set FZF default search to be exact
 export FZF_DEFAULT_OPTS="--exact"
-export FZF_DEFAULT_COMMAND='fd --no-ignore --type f --hidden --follow --exclude .git --exclude /Library --exclude "Google Drive/.My Drive"'
-export FZF_CTRL_T_COMMAND='fd --no-ignore --type f --hidden --follow --exclude .git --exclude /Library --exclude "Google Drive/.My Drive"'
-export FZF_ALT_C_COMMAND='fd --no-ignore --type d --hidden --exclude .git --exclude /Library --exclude "Google Drive/.My Drive"'
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git --exclude /Library --exclude "Google Drive/.My Drive"'
+export FZF_CTRL_T_COMMAND='fd --type f --hidden --follow --exclude .git --exclude /Library --exclude "Google Drive/.My Drive"'
+export FZF_ALT_C_COMMAND='fd --type d --hidden --exclude .git --exclude /Library --exclude "Google Drive/.My Drive"'
 
 # Adapted from fzf/0.30.0/shell/key-bindings.bash fzf-file-widget
 # Assume bash version > 4.0
