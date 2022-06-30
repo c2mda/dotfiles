@@ -76,11 +76,11 @@ alias python=python3
 
 #€ On debian fd is renamed fdfind
 if [ -f /usr/bin/fdfind ] && ! [ -f /opt/homebrew/bin/fd ]; then
-  alias fd=/usr/bin/fdfind
-fi
-
+  alias fd='/usr/bin/fdfind -I'
+else
 # Fd does not respect .gitignore
-alias fd='fd -I'
+  alias fd='fd -I'
+fi
 
 #########################################################################
 ############################### FZF #####################################
