@@ -25,6 +25,7 @@ git config --global user.name "Cyprien de Masson"
 maybe_copy ${folder}/.inputrc ~/.inputrc 
 maybe_copy ${folder}/.vimrc ~/.vimrc 
 maybe_copy ${folder}/.bashrc ~/.bashrc 
+maybe_copy ${folder}/.tmux.conf ~/.tmux.conf
 
 # Setup vim swap folder.
 mkdir -p ~/.vim/swap
