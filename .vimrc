@@ -226,3 +226,6 @@ hi SpellBad cterm=underline
 hi SpellLocal cterm=underline
 hi SpellRare cterm=underline
 hi SpellCap cterm=underline
+
+" Set the shell interactive, to allows bash aliases such as fd.
+set shellcmdflag=-ic
