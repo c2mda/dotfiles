@@ -42,5 +42,8 @@ vim +PluginInstall +qall
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install
 
+# Install fd finder
+sudo apt install fd-find
+
 # Source bashrc
 source ~/.bashrc
