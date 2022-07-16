@@ -76,11 +76,12 @@ alias python=python3
 
 #€ On debian fd is renamed fdfind
 if [ -f /usr/bin/fdfind ] && ! [ -f /opt/homebrew/bin/fd ]; then
-  alias fd='/usr/bin/fdfind -I'
+  FDFIND='/usr/bin/fdfind -I'
 else
 # Fd does not respect .gitignore
-  alias fd='fd -I'
+  FDFIND='fd -I'
 fi
+alias fd="$FDFIND"
 
 #########################################################################
 ############################### FZF #####################################
@@ -94,9 +95,9 @@ fi
 
 # Set FZF default search to be exact
 export FZF_DEFAULT_OPTS="--exact"
-export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git --exclude /Library --exclude "Google Drive/.My Drive"'
-export FZF_CTRL_T_COMMAND='fd --type f --hidden --follow --exclude .git --exclude /Library --exclude "Google Drive/.My Drive"'
-export FZF_ALT_C_COMMAND='fd --type d --hidden --exclude .git --exclude /Library --exclude "Google Drive/.My Drive"'
+export FZF_DEFAULT_COMMAND="${FDFIND} --type f --hidden --follow --exclude .git --exclude /Library --exclude \"Google Drive/.My Drive\""
+export FZF_CTRL_T_COMMAND="${FDFIND} --type f --hidden --follow --exclude .git --exclude /Library --exclude \"Google Drive/.My Drive\""
+export FZF_ALT_C_COMMAND="${FDFIND}--type d --hidden --exclude .git --exclude /Library --exclude \"Google Drive/.My Drive\""
 
 # Adapted from fzf/0.30.0/shell/key-bindings.bash fzf-file-widget
 # Assume bash version > 4.0
