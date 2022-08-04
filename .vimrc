@@ -74,7 +74,8 @@ set expandtab
 set tabstop=2
 
 " Indenting indents by 2 spaces
-set shiftwidth=2 expandtab
+set shiftwidth=2 
+set expandtab
 
 " Search is incremental
 set incsearch
@@ -198,10 +199,9 @@ set spellcapcheck=
 " autocmd FileType javascript AutoFormatBuffer clang-format
 " autocmd FileType javascript setlocal equalprg=js-beautify\ --stdin
 " autocmd FileType javascript AutoFormatBuffer prettier
-
+"
 map <C-a> <esc>ggVG<CR>
 
-filetype plugin on
 set omnifunc=syntaxcomplete#Complete
 
 nnoremap <C-t> :History:<CR>
@@ -229,3 +229,7 @@ hi SpellCap cterm=underline
 
 " Set the shell interactive, to allows bash aliases such as fd
 set shellcmdflag=-ic
+
+" For some reason set shiftwidth=2 or tabstop=2 is ignored, so use autocmd.
+autocmd FileType python set shiftwidth=2
+autocmd FileType python set tabstop=2
