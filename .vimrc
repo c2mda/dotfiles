@@ -166,8 +166,8 @@ let g:netrw_sort_sequence = '[\/]$,*'
 " mouse doesnt copy line numbers, mouse scrolling
 set mouse=a
 
-" nice colors
-colorscheme desert
+" nice colors -- that's not so nice actually
+" colorscheme desert 
 
 " white on black menu for autocompletion -- must be after colorscheme
 highlight Pmenu ctermfg=15 ctermbg=0 guifg=#ffffff guibg=#000000
