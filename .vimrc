@@ -55,6 +55,9 @@ Plugin 'junegunn/fzf.vim'
 " Vim outline window.
 " Plugin 'vim-voom/VOoM'
 
+" For autocompletion in Python.
+Plugin 'davidhalter/jedi-vim'
+
 call vundle#end()
 call glaive#Install()
 else
@@ -122,14 +125,10 @@ map <leader>fc :ALEFix<CR>
 " let g:syntastic_check_on_wq = 0
 " let g:syntastic_python_checker_args="--single-file=y"
 " let g:syntastic_auto_jump = 1
-" " Map \lo, \ln, \lp, \lc to lopen, lclose, lnext, lprevious
-" map <leader>lo :lopen <CR>
-" map <leader>lc :lclose <CR>
-" map <leader>lp :lprevious <CR>
-" map <leader>ln :lnext <CR>
 " let g:syntastic_javascript_checkers=['eslint']
 " let g:syntastic_html_checkers=['validator']
  map <leader>sc :write<CR>:ALELint<CR>
+
 
 " Map \fsc to format + syntastic
 map <leader>fsc :write<CR>:ALEFix<CR>:write<CR>:ALELint<CR>
@@ -214,11 +213,20 @@ packloadall
 let g:ale_fixers = {'python': ['reorder-python-imports','autopep8']}
 let g:ale_linters = {'python': ['pylint']}
 
+" Otherwise lnext errors when only one error in list.
+function! Lnextwrap()
+  try
+    :lnext 
+  catch /^Vim\%((\a\+)\)\=:E553/
+    :lfirst 
+  endtry
+endfunction
+
 " Map \lo, \ln, \lp, \lc to lopen, lclose, lnext, lprevious
 map <leader>lo :lopen <CR>
 map <leader>lc :lclose <CR>
 map <leader>lp :lprevious <CR>
-map <leader>ln :lnext <CR>
+map <leader>ln :call Lnextwrap()<CR>
 
 " Highlight spell mistake by underlining.
 hi clear SpellBad
