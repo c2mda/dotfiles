@@ -52,6 +52,9 @@ Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
 
+" Vim outline window.
+" Plugin 'vim-voom/VOoM'
+
 call vundle#end()
 call glaive#Install()
 else
@@ -233,3 +236,6 @@ set shellcmdflag=-ic
 " For some reason set shiftwidth=2 or tabstop=2 is ignored, so use autocmd.
 autocmd FileType python set shiftwidth=2
 autocmd FileType python set tabstop=2
+
+" Search in buffers with FZF
+nnoremap <C-_> :Lines<CR>
