@@ -28,6 +28,7 @@ maybe_copy ${folder}/.vimrc ~/.vimrc
 maybe_copy ${folder}/.bash_profile ~/.bash_profile
 maybe_copy ${folder}/.bashrc ~/.bashrc 
 maybe_copy ${folder}/.tmux.conf ~/.tmux.conf
+maybe_copy ${folder}/.pylintrc ~/.pylintrc
 
 # Setup vim swap folder.
 mkdir -p ~/.vim/swap
@@ -45,6 +46,9 @@ vim +PluginInstall +qall
 sudo apt install build-essential cmake vim-nox python3-dev
 cd ~/.vim/bundle/YouCompleteMe
 python3 install.py --all
+
+# Required for Python3 formatting.
+pip install autopep8, reorder-python-imports, pylint
 
 # Install FZF
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
