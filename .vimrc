@@ -53,10 +53,20 @@ Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
 
 " Vim outline window.
+" Doesn't work great.
 " Plugin 'vim-voom/VOoM'
 
 " For autocompletion in Python.
-Plugin 'davidhalter/jedi-vim'
+" Actually jedi is not great compared to youcompleteme.
+" Plugin 'davidhalter/jedi-vim'
+
+" Autocomplete.
+" Also needs:
+" sudo apt install build-essential cmake vim-nox python3-dev
+" sudo apt install mono-complete golang nodejs default-jdk npm
+" cd ~/.vim/bundle/YouCompleteMe
+" python3 install.py --all
+Plugin 'ycm-core/YouCompleteMe'
 
 call vundle#end()
 call glaive#Install()

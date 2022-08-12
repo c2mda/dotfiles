@@ -1,3 +1,4 @@
+# Assumes Ubuntu / apt.
 folder=$(dirname -- "$0";)
 
 maybe_copy () {
@@ -39,9 +40,15 @@ fi
 # Install vim plugins.
 vim +PluginInstall +qall
 
+# Some stuff needed for YouCompleteMe in vim.
+# A bit heavy but couldn't find a good lighter autocomplete.
+sudo apt install build-essential cmake vim-nox python3-dev
+cd ~/.vim/bundle/YouCompleteMe
+python3 install.py --all
+
 # Install FZF
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-~/.fzf/install
+~/.fzf/install --key-bindings --completion --update-rc
 
 # Install fd finder
 sudo apt install fd-find
