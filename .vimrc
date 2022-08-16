@@ -223,6 +223,9 @@ packloadall
 let g:ale_fixers = {'python': ['reorder-python-imports','autopep8']}
 let g:ale_linters = {'python': ['pylint']}
 
+" Autopep8 doesn't understand .pylintrc and default indent is 4.
+let g:ale_python_autopep8_options = '--indent-size=2'
+
 " Otherwise lnext errors when only one error in list.
 function! Lnextwrap()
   try
