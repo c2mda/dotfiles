@@ -175,6 +175,9 @@ if [[ $OSTYPE == 'darwin'* ]]; then
 
   # Add keybase to PATH for git etc.
   export PATH=$PATH:/Applications/Keybase.app/Contents/SharedSupport/bin
+
+  # Add gnubin.
+  PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
 fi
 
 # Remove duplicate in PATH
