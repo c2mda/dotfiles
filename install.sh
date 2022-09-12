@@ -1,3 +1,4 @@
+# Assumes Ubuntu / apt.
 folder=$(dirname -- "$0";)
 
 maybe_copy () {
@@ -27,6 +28,7 @@ maybe_copy ${folder}/.vimrc ~/.vimrc
 maybe_copy ${folder}/.bash_profile ~/.bash_profile
 maybe_copy ${folder}/.bashrc ~/.bashrc 
 maybe_copy ${folder}/.tmux.conf ~/.tmux.conf
+maybe_copy ${folder}/.pylintrc ~/.pylintrc
 
 # Setup vim swap folder.
 mkdir -p ~/.vim/swap
@@ -39,9 +41,18 @@ fi
 # Install vim plugins.
 vim +PluginInstall +qall
 
+# Some stuff needed for YouCompleteMe in vim.
+# A bit heavy but couldn't find a good lighter autocomplete.
+sudo apt install build-essential cmake vim-nox python3-dev
+cd ~/.vim/bundle/YouCompleteMe
+python3 install.py --all
+
+# Required for Python3 formatting.
+pip install autopep8, reorder-python-imports, pylint
+
 # Install FZF
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-~/.fzf/install
+~/.fzf/install --key-bindings --completion --update-rc
 
 # Install fd finder
 sudo apt install fd-find

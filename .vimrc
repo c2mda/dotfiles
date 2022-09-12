@@ -53,10 +53,20 @@ Plugin 'junegunn/fzf'
 Plugin 'junegunn/fzf.vim'
 
 " Vim outline window.
+" Doesn't work great.
 " Plugin 'vim-voom/VOoM'
 
 " For autocompletion in Python.
-Plugin 'davidhalter/jedi-vim'
+" Actually jedi is not great compared to youcompleteme.
+" Plugin 'davidhalter/jedi-vim'
+
+" Autocomplete.
+" Also needs:
+" sudo apt install build-essential cmake vim-nox python3-dev
+" sudo apt install mono-complete golang nodejs default-jdk npm
+" cd ~/.vim/bundle/YouCompleteMe
+" python3 install.py --all
+Plugin 'ycm-core/YouCompleteMe'
 
 " For automatic deletion of swap files.
 Plugin 'gioele/vim-autoswap'
@@ -215,6 +225,9 @@ nnoremap <C-t> :History:<CR>
 packloadall
 let g:ale_fixers = {'python': ['reorder-python-imports','autopep8']}
 let g:ale_linters = {'python': ['pylint']}
+
+" Autopep8 doesn't understand .pylintrc and default indent is 4.
+let g:ale_python_autopep8_options = '--indent-size=2'
 
 " Otherwise lnext errors when only one error in list.
 function! Lnextwrap()
