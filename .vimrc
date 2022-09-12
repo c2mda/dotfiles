@@ -58,6 +58,9 @@ Plugin 'junegunn/fzf.vim'
 " For autocompletion in Python.
 Plugin 'davidhalter/jedi-vim'
 
+" For automatic deletion of swap files.
+Plugin 'gioele/vim-autoswap'
+
 call vundle#end()
 call glaive#Install()
 else
@@ -247,3 +250,8 @@ autocmd FileType python set tabstop=2
 
 " Search in buffers with FZF
 nnoremap <C-_> :Lines<CR>
+
+" Use local pylint, so it picks up virtual env.
+" Otherwise global pylint doesn't know about virtualenv
+" packages and claims import are failing.
+let g:ale_use_global_executables = 0
