@@ -20,6 +20,7 @@ maybe_copy () {
   fi
 }
 
+# Note: also needs to upload ssh private key.
 git config --global user.email "cyprien.de.masson@gmail.com"
 git config --global user.name "Cyprien de Masson"
 
@@ -57,5 +58,8 @@ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 # Install fd finder
 sudo apt install fd-find
 
-# Source bashrc
-source ~/.bashrc
+# Install kubectl and config
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+chmod +x ./kubectl
+mv ./kubectl /usr/local/bin/kubectl
+cp /mnt/volumetrialcyp/cw-kubeconfig ~/.kube/config

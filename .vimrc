@@ -67,9 +67,11 @@ Plugin 'junegunn/fzf.vim'
 " python3 install.py --all
 Plugin 'ycm-core/YouCompleteMe'
 
-" Tmux vim clipboard integration
-" Doesnt work, broken.
-" Plugin 'roxma/vim-tmux-clipboard'
+" For automatic deletion of swap files.
+Plugin 'gioele/vim-autoswap'
+
+" Use OSC52 for clipboard, not X11 (slow on connection)
+Plugin 'ojroques/vim-oscyank'
 
 call vundle#end()
 call glaive#Install()
@@ -266,3 +268,12 @@ nnoremap <C-_> :Lines<CR>
 
 " To use camel case motion,
 let g:camelcasemotion_key = ','
+
+" Use local pylint, so it picks up virtual env.
+" Otherwise global pylint doesn't know about virtualenv
+" packages and claims import are failing.
+let g:ale_use_global_executables = 0
+
+" After every yank copy to current terminal system clipboard using OSC52
+" https://github.com/ojroques/vim-oscyank
+autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | execute 'OSCYankReg "' | endif
