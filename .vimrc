@@ -33,8 +33,8 @@ Plugin 'dense-analysis/ale'
 " To comment/uncomment.
 Plugin 'preservim/nerdcommenter'
 
-" Fuzzy searcher.
-Plugin 'tpope/tpope-vim-abolish'
+" To move through names with _
+Plugin 'bkad/CamelCaseMotion'
 
 " Maktaba: Google vimscript utility.
 Plugin 'google/vim-maktaba'
@@ -63,10 +63,13 @@ Plugin 'junegunn/fzf.vim'
 " Autocomplete.
 " Also needs:
 " sudo apt install build-essential cmake vim-nox python3-dev
-" sudo apt install mono-complete golang nodejs default-jdk npm
 " cd ~/.vim/bundle/YouCompleteMe
 " python3 install.py --all
 Plugin 'ycm-core/YouCompleteMe'
+
+" Tmux vim clipboard integration
+" Doesnt work, broken.
+" Plugin 'roxma/vim-tmux-clipboard'
 
 call vundle#end()
 call glaive#Install()
@@ -175,14 +178,14 @@ let g:netrw_sort_sequence = '[\/]$,*'
 " mouse doesnt copy line numbers, mouse scrolling
 set mouse=a
 
-" nice colors -- that's not so nice actually
-" colorscheme desert 
+" nice colors
+colorscheme desert 
 
 " white on black menu for autocompletion -- must be after colorscheme
 highlight Pmenu ctermfg=15 ctermbg=0 guifg=#ffffff guibg=#000000
 
-" Highlight lines over 80 chars -- must be after colorscheme
-highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+" Highlight lines over 80 chars grey on darkred -- must be after colorscheme
+highlight OverLength ctermbg=88 ctermfg=grey guibg=#592929
 match OverLength /\%81v.\+/
 
 " NERDCommenter: add space after #
@@ -260,3 +263,6 @@ autocmd FileType python set tabstop=2
 
 " Search in buffers with FZF
 nnoremap <C-_> :Lines<CR>
+
+" To use camel case motion,
+let g:camelcasemotion_key = ','
