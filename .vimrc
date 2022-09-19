@@ -70,8 +70,15 @@ Plugin 'ycm-core/YouCompleteMe'
 " For automatic deletion of swap files.
 Plugin 'gioele/vim-autoswap'
 
-" Use OSC52 for clipboard, not X11 (slow on connection)
+" Tmux vim clipboard integration
+" Doesnt work, broken.
+" Plugin 'roxma/vim-tmux-clipboard'
+
+" Use OSC52 for clipboard, not X11 (X11 slow on connection)
 Plugin 'ojroques/vim-oscyank'
+
+" Indent visible in yaml files.
+Plugin 'Yggdroot/indentLine'
 
 call vundle#end()
 call glaive#Install()
@@ -277,3 +284,9 @@ let g:ale_use_global_executables = 0
 " After every yank copy to current terminal system clipboard using OSC52
 " https://github.com/ojroques/vim-oscyank
 autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | execute 'OSCYankReg "' | endif
+
+" Yaml indentation 2 spaces.
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+
+" For indentLine plugin
+let g:indentLine_char = '⦙'
