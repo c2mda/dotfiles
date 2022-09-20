@@ -100,10 +100,10 @@ set expandtab
 
 " Two spaces per tab
 set tabstop=2
+set softtabstop=2
 
 " Indenting indents by 2 spaces
 set shiftwidth=2 
-set expandtab
 
 " Search is incremental
 set incsearch
@@ -286,7 +286,7 @@ let g:ale_use_global_executables = 0
 autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | execute 'OSCYankReg "' | endif
 
 " Yaml indentation 2 spaces.
-autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+autocmd FileType yaml setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
 
 " For indentLine plugin
 let g:indentLine_char = '⦙'
