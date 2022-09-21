@@ -290,3 +290,6 @@ autocmd FileType yaml setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
 
 " For indentLine plugin
 let g:indentLine_char = '⦙'
+
+" Yaml does not require indentation whne using hyphen.
+let g:ale_yaml_yamllint_options='-d "{extends: default, rules: {indentation: {indent-sequences: consistent}}}'
