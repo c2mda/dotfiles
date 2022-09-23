@@ -80,6 +80,9 @@ Plugin 'ojroques/vim-oscyank'
 " Indent visible in yaml files.
 Plugin 'Yggdroot/indentLine'
 
+" Correct folds in yaml.
+Plugin 'pedrohdz/vim-yaml-folds'
+
 call vundle#end()
 call glaive#Install()
 else
@@ -293,3 +296,23 @@ let g:indentLine_char = '⦙'
 
 " Yaml does not require indentation whne using hyphen.
 let g:ale_yaml_yamllint_options='-d "{extends: default, rules: {indentation: {indent-sequences: consistent}}}'
+
+" Start with all folds open.
+" https://stackoverflow.com/questions/8316139/how-to-set-the-default-to-unfolded-when-you-open-a-file
+autocmd BufWinEnter * silent! :%foldopen!
+
+" To allow YCM to use local python interpreter in virtual_env
+" From :help youcompleteme-configuring-through-vim-options
+" Also needs a ~/global_extra_conf.py file.
+let g:ycm_python_interpreter_path = ''
+let g:ycm_python_sys_path = []
+let g:ycm_extra_conf_vim_data = [
+\  'g:ycm_python_interpreter_path',
+\  'g:ycm_python_sys_path'
+\]
+let g:ycm_global_ycm_extra_conf = '~/global_extra_conf.py'
+
+" YCM commands to get documentation and go to definition
+" https://github.com/ycm-core/YouCompleteMe
+nnoremap <leader>jd :YcmCompleter GoTo<CR>
+nnoremap <leader>jv :YcmCompleter GetDoc<CR>
