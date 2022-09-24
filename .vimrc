@@ -106,7 +106,7 @@ set tabstop=2
 set softtabstop=2
 
 " Indenting indents by 2 spaces
-set shiftwidth=2 
+set shiftwidth=2
 
 " Search is incremental
 set incsearch
@@ -161,7 +161,7 @@ map <leader>fsc :write<CR>:ALEFix<CR>:write<CR>:ALELint<CR>
 " File types to autoformat on save
 augroup autoformat_settings
 au BufReadPost *.ejs set syntax=html
-autocmd FileType javascript AutoFormatBuffer prettier 
+autocmd FileType javascript AutoFormatBuffer prettier
 augroup END
 
 " Always show status bar.
@@ -191,7 +191,7 @@ let g:netrw_sort_sequence = '[\/]$,*'
 set mouse=a
 
 " nice colors
-colorscheme desert 
+" colorscheme desert
 
 " white on black menu for autocompletion -- must be after colorscheme
 highlight Pmenu ctermfg=15 ctermbg=0 guifg=#ffffff guibg=#000000
@@ -232,7 +232,7 @@ map <C-a> <esc>ggVG<CR>
 set omnifunc=syntaxcomplete#Complete
 
 nnoremap <C-t> :History:<CR>
-      
+
 " Load installed plugin (prettier for javascript)
 packloadall
 let g:ale_fixers = {'python': ['reorder-python-imports','autopep8']}
@@ -244,9 +244,9 @@ let g:ale_python_autopep8_options = '--indent-size=2'
 " Otherwise lnext errors when only one error in list.
 function! Lnextwrap()
   try
-    :lnext 
+    :lnext
   catch /^Vim\%((\a\+)\)\=:E553/
-    :lfirst 
+    :lfirst
   endtry
 endfunction
 
