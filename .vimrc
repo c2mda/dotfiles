@@ -316,3 +316,7 @@ let g:ycm_global_ycm_extra_conf = '~/global_extra_conf.py'
 " https://github.com/ycm-core/YouCompleteMe
 nnoremap <leader>jd :YcmCompleter GoTo<CR>
 nnoremap <leader>jv :YcmCompleter GetDoc<CR>
+
+" Display tabs as \t.
+set list
+set listchars=tab:\\t
