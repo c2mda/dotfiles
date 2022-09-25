@@ -61,5 +61,6 @@ sudo apt install fd-find
 # Install kubectl and config
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 chmod +x ./kubectl
-mv ./kubectl /usr/local/bin/kubectl
-cp /mnt/volumetrialcyp/cw-kubeconfig ~/.kube/config
+sudo mv ./kubectl /usr/local/bin/kubectl
+sudo mkdir -p ~/.kube
+sudo cp /mnt/volumetrialcyp/cw-kubeconfig ~/.kube/config
