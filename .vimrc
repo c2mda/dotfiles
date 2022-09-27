@@ -190,8 +190,11 @@ let g:netrw_sort_sequence = '[\/]$,*'
 " mouse doesnt copy line numbers, mouse scrolling
 set mouse=a
 
-" nice colors
-" colorscheme desert
+" nice colors even on OSX
+colorscheme desert
+" desert looks different on OSX and Linux, make Normal consistent.
+highlight Normal ctermfg=LightGray ctermbg=Black
+
 
 " white on black menu for autocompletion -- must be after colorscheme
 highlight Pmenu ctermfg=15 ctermbg=0 guifg=#ffffff guibg=#000000
