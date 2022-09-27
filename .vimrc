@@ -298,7 +298,7 @@ autocmd FileType yaml setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
 let g:indentLine_char = '⦙'
 
 " Yaml does not require indentation whne using hyphen.
-let g:ale_yaml_yamllint_options='-d "{extends: default, rules: {indentation: {indent-sequences: consistent}}}'
+let g:ale_yaml_yamllint_options='-d "{extends: default, rules: {indentation: {indent-sequences: consistent}}}"'
 
 " Start with all folds open.
 " https://stackoverflow.com/questions/8316139/how-to-set-the-default-to-unfolded-when-you-open-a-file
