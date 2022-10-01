@@ -83,6 +83,9 @@ Plugin 'Yggdroot/indentLine'
 " Correct folds in yaml.
 Plugin 'pedrohdz/vim-yaml-folds'
 
+" Move based on indent level, useful for YAML.
+Plugin 'jeetsukumaran/vim-indentwise'
+
 call vundle#end()
 call glaive#Install()
 else
@@ -236,10 +239,10 @@ set omnifunc=syntaxcomplete#Complete
 
 nnoremap <C-t> :History:<CR>
 
-" Load installed plugin (prettier for javascript)
+" Load installed plugins.
 packloadall
 let g:ale_fixers = {'python': ['reorder-python-imports','autopep8']}
-let g:ale_linters = {'python': ['pylint']}
+let g:ale_linters = {'python': ['pylint'], 'yaml': ['yamllint']}
 
 " Autopep8 doesn't understand .pylintrc and default indent is 4.
 let g:ale_python_autopep8_options = '--indent-size=2'
