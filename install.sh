@@ -64,3 +64,6 @@ chmod +x ./kubectl
 sudo mv ./kubectl /usr/local/bin/kubectl
 sudo mkdir -p ~/.kube
 # sudo cp /mnt/volumetrialcyp/cw-kubeconfig ~/.kube/config
+
+# Install useful stuff.
+sudo apt install python3.8-venv
