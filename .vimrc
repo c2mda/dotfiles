@@ -83,6 +83,9 @@ Plugin 'Yggdroot/indentLine'
 " Correct folds in yaml.
 Plugin 'pedrohdz/vim-yaml-folds'
 
+" Move based on indent level, useful for YAML.
+Plugin 'jeetsukumaran/vim-indentwise'
+
 call vundle#end()
 call glaive#Install()
 else
@@ -190,8 +193,11 @@ let g:netrw_sort_sequence = '[\/]$,*'
 " mouse doesnt copy line numbers, mouse scrolling
 set mouse=a
 
-" nice colors
-" colorscheme desert
+" nice colors even on OSX
+colorscheme desert
+" desert looks different on OSX and Linux, make Normal consistent.
+highlight Normal ctermfg=LightGray ctermbg=Black
+
 
 " white on black menu for autocompletion -- must be after colorscheme
 highlight Pmenu ctermfg=15 ctermbg=0 guifg=#ffffff guibg=#000000
@@ -233,10 +239,10 @@ set omnifunc=syntaxcomplete#Complete
 
 nnoremap <C-t> :History:<CR>
 
-" Load installed plugin (prettier for javascript)
+" Load installed plugins.
 packloadall
 let g:ale_fixers = {'python': ['reorder-python-imports','autopep8']}
-let g:ale_linters = {'python': ['pylint']}
+let g:ale_linters = {'python': ['pylint'], 'yaml': ['yamllint']}
 
 " Autopep8 doesn't understand .pylintrc and default indent is 4.
 let g:ale_python_autopep8_options = '--indent-size=2'
@@ -295,7 +301,7 @@ autocmd FileType yaml setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
 let g:indentLine_char = '⦙'
 
 " Yaml does not require indentation whne using hyphen.
-let g:ale_yaml_yamllint_options='-d "{extends: default, rules: {indentation: {indent-sequences: consistent}}}'
+let g:ale_yaml_yamllint_options='-d "{extends: default, rules: {indentation: {indent-sequences: consistent}}}"'
 
 " Start with all folds open.
 " https://stackoverflow.com/questions/8316139/how-to-set-the-default-to-unfolded-when-you-open-a-file

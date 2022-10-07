@@ -30,6 +30,7 @@ maybe_copy ${folder}/.bash_profile ~/.bash_profile
 maybe_copy ${folder}/.bashrc ~/.bashrc 
 maybe_copy ${folder}/.tmux.conf ~/.tmux.conf
 maybe_copy ${folder}/.pylintrc ~/.pylintrc
+maybe_copy ${folder}/rc ~/.ssh/rc
 
 # Setup vim swap folder.
 mkdir -p ~/.vim/swap
@@ -44,6 +45,7 @@ vim +PluginInstall +qall
 
 # Some stuff needed for YouCompleteMe in vim.
 # A bit heavy but couldn't find a good lighter autocomplete.
+sudo apt-get update
 sudo apt install build-essential cmake vim-nox python3-dev
 cd ~/.vim/bundle/YouCompleteMe
 python3 install.py --all
@@ -58,8 +60,12 @@ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 # Install fd finder
 sudo apt install fd-find
 
-# Install kubectl and config
+# Install kubectl.
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 chmod +x ./kubectl
-mv ./kubectl /usr/local/bin/kubectl
-cp /mnt/volumetrialcyp/cw-kubeconfig ~/.kube/config
+sudo mv ./kubectl /usr/local/bin/kubectl
+sudo mkdir -p ~/.kube
+# sudo cp /mnt/volumetrialcyp/cw-kubeconfig ~/.kube/config
+
+# Install useful stuff.
+sudo apt install python3.8-venv
