@@ -48,7 +48,7 @@ GREEN='\033[0;32m'
 RED='\033[0;31m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No color.
-HOMEMACHINE="X-MBP-Perso-M1-2021.local"
+HOMEMACHINE="XMBPPersoM12021.station"
 if [ ${HOSTNAME} = ${HOMEMACHINE} ]; then
   PCOLORHN=${RED}
 else
