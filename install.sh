@@ -30,6 +30,7 @@ maybe_copy ${folder}/.bash_profile ~/.bash_profile
 maybe_copy ${folder}/.bashrc ~/.bashrc 
 maybe_copy ${folder}/.tmux.conf ~/.tmux.conf
 maybe_copy ${folder}/.pylintrc ~/.pylintrc
+maybe_copy ${folder}/rc ~/.ssh/rc
 
 # Setup vim swap folder.
 mkdir -p ~/.vim/swap
