@@ -1,78 +1,55 @@
-echo "Dry run backup -> backup2"
-rsync \
-  --perms \
-  --whole-file \
-  --chmod=777 \
-  --archive \
-  --recursive \
-  --progress \
-  --info=name0 \
-  --info=progress2 \
-  --stats \
-  --human-readable \
-  --exclude=".*" \
-  --out-format="%f" \
-  --dry-run \
-  /Volumes/backup/ \
-  /Volumes/backup2/
+#!/bin/bash
+backup_disks=( /Volumes/backup*/ )
+num_backups=${#backup_disks[*]}
+echo "Found ${num_backups} disks: ${backup_disks[@]}"
 
-read -p "Proceed backup -> backup2 ? " -n 1 -r
-echo    # (optional) move to a new line
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
-rsync \
-  --perms \
-  --whole-file \
-  --chmod=777 \
-  --archive \
-  --recursive \
-  --progress \
-  --info=name0 \
-  --info=progress2 \
-  --stats \
-  --human-readable \
-  --exclude=".*" \
-  /Volumes/backup/ \
-  /Volumes/backup2/
+if [ $num_backups -lt 2 ]; then 
+  echo "Need at least two backup disks, found: $backup_disks"
+  exit
 fi
 
-echo "==========="
-echo "==========="
-echo "==========="
-echo "Dry run backup2 -> backup"
-rsync \
-  --perms \
-  --whole-file \
-  --chmod=777 \
-  --archive \
-  --recursive \
-  --progress \
-  --info=name0 \
-  --info=progress2 \
-  --stats \
-  --human-readable \
-  --exclude=".*" \
-  --out-format="%f" \
-  --dry-run \
-  /Volumes/backup2/ \
-  /Volumes/backup/
+for disk_from in "${backup_disks[@]}"; do
+  for disk_to in "${backup_disks[@]}"; do
+    if [ $disk_from != $disk_to ]; then 
+      echo "Dry run ${disk_from} -> ${disk_to}"
+      read -n 1 -s
 
-read -p "Proceed backup2 -> backup ? " -n 1 -r
-echo    # (optional) move to a new line
-if [[ $REPLY =~ ^[Yy]$ ]]
-then
-rsync \
-  --perms \
-  --whole-file \
-  --chmod=777 \
-  --archive \
-  --recursive \
-  --progress \
-  --info=name0 \
-  --info=progress2 \
-  --stats \
-  --human-readable \
-  --exclude=".*" \
-  /Volumes/backup2/ \
-  /Volumes/backup/
-fi
+      rsync \
+        --perms \
+        --whole-file \
+        --chmod=777 \
+        --archive \
+        --recursive \
+        --stats \
+        --human-readable \
+        --exclude=".*" \
+        --out-format="/%f" \
+        --dry-run \
+        $disk_from \
+        $disk_to \
+        | egrep -v "${disk_from}[^/]+/[^/]+/"  # Don't print all subfolders.
+
+      read -p "Proceed ${disk_from} -> ${disk_to}? " -n 1 -r
+      echo    # (optional) move to a new line
+
+      if User$REPLY =~ ^[Yy]$ ]]; then
+        rsync \
+          --perms \
+          --whole-file \
+          --chmod=777 \
+          --archive \
+          --recursive \
+          --stats \
+          --human-readable \
+          --exclude=".*" \
+          --progress \
+          --info=name0 \
+          --info=progress2 \
+          $disk_from \
+          $disk_to
+      fi
+
+      echo -e "\n\n\n"
+    fi
+  done
+done
