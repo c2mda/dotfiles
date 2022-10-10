@@ -1,17 +1,23 @@
 #!/bin/bash
 # Note that % progress, transfer speed and estimated time left are incorrect,
-# because rsync does not know ahead of time which files will be copied in 
+# because rsync does not know ahead of time which files will be copied in
 # recursive mode.
-# 
-# But you can see total transfer size in the dry run, and current transferred 
+#
+# But you can see total transfer size in the dry run, and current transferred
 # size during the actual run.
+#
+# To deduplicate large files first:
+#
+#   brew install jdupes
+#   jdupes . --no-hidden --recurse --size -X size+:50m
+#
 set -e
 
 backup_disks=( /Volumes/backup*/ )
 num_backups=${#backup_disks[*]}
 echo "Found ${num_backups} disks: ${backup_disks[@]}"
 
-if [ $num_backups -lt 2 ]; then 
+if [ $num_backups -lt 2 ]; then
   echo "Need at least two backup disks, found: $backup_disks"
   exit
 fi
@@ -20,7 +26,7 @@ for disk_from in "${backup_disks[@]}"; do
   for disk_to in "${backup_disks[@]}"; do
 
     # Don't sync a disk with itself.
-    if [[ $disk_from == $disk_to ]]; then 
+    if [[ $disk_from == $disk_to ]]; then
       continue
     fi
 
