@@ -1,4 +1,10 @@
 #!/bin/bash
+# Note that % progress, transfer speed and estimated time left are incorrect,
+# because rsync does not know ahead of time which files will be copied in 
+# recursive mode.
+# 
+# But you can see total transfer size in the dry run, and current transferred 
+# size during the actual run.
 set -e
 
 backup_disks=( /Volumes/backup*/ )
@@ -19,15 +25,23 @@ for disk_from in "${backup_disks[@]}"; do
     fi
 
     # Dry run.
-    echo "Dry run ${disk_from} -> ${disk_to}"
-    read -n 1 -s
+    read -p "Dry run ${disk_from} -> ${disk_to} ? (Y/y)" -n 1 -r
+    echo    # Move to a new line.
+    if ! [[ $REPLY =~ ^[Yy]$ ]]; then
+      continue
+    fi
 
+    # --perms: preserve permissions.
+    # --recursive: copy subfolders.
+    # --times: preserve times.
+    # --whole-file: files are transferred whole, not delta.
+    # --stats: print stats at the end (number/size/etc).
     rsync \
       --perms \
+      --recursive \
+      --times \
       --whole-file \
       --chmod=777 \
-      --archive \
-      --recursive \
       --stats \
       --human-readable \
       --exclude=".*" \
@@ -38,24 +52,26 @@ for disk_from in "${backup_disks[@]}"; do
       | egrep -v "${disk_from}[^/]+/[^/]+/"  # Don't print subfolders.
 
     # Confirmation.
-    read -p "Proceed ${disk_from} -> ${disk_to}? " -n 1 -r
+    read -p "Proceed ${disk_from} -> ${disk_to}? (Y/y)" -n 1 -r
     echo    # Move to a new line.
-
     if ! [[ $REPLY =~ ^[Yy]$ ]]; then
       continue
     fi
 
     # Real run.
+    # --no-inc-recursive: build full file list first, for exact total progress.
+    # --info=name0: don't display current name.
+    # --info=progress2: accurate total progress.
     rsync \
       --perms \
-      --whole-file \
-      --chmod=777 \
-      --archive \
       --recursive \
+      --times \
+      --whole-file \
+      --no-inc-recursive \
+      --chmod=777 \
       --stats \
       --human-readable \
       --exclude=".*" \
-      --progress \
       --info=name0 \
       --info=progress2 \
       $disk_from \
