@@ -32,7 +32,7 @@ for disk_from in "${backup_disks[@]}"; do
       read -p "Proceed ${disk_from} -> ${disk_to}? " -n 1 -r
       echo    # (optional) move to a new line
 
-      if User$REPLY =~ ^[Yy]$ ]]; then
+      if [[ $REPLY =~ ^[Yy]$ ]]; then
         rsync \
           --perms \
           --whole-file \
