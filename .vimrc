@@ -241,7 +241,7 @@ nnoremap <C-t> :History:<CR>
 
 " Load installed plugins.
 packloadall
-let g:ale_fixers = {'python': ['reorder-python-imports','autopep8']}
+let g:ale_fixers = {'python': ['reorder-python-imports','autopep8'], 'yaml': ['trim_whitespace']}
 let g:ale_linters = {'python': ['pylint'], 'yaml': ['yamllint']}
 
 " Autopep8 doesn't understand .pylintrc and default indent is 4.
@@ -278,6 +278,7 @@ set shellcmdflag=-ic
 " For some reason set shiftwidth=2 or tabstop=2 is ignored, so use autocmd.
 autocmd FileType python set shiftwidth=2
 autocmd FileType python set tabstop=2
+autocmd FileType python set softtabstop=2
 
 " Search in buffers with FZF
 nnoremap <C-_> :Lines<CR>
