@@ -142,7 +142,7 @@ export EDITOR=vim
 export TREE_CHARSET=ascii
 
 # Enable color support of ls and also add handy aliases
-alias ls='ls -alhG'
+alias ls='ls --color=auto -alh'
 
 # Disable Ctrl+S locking the terminal
 stty -ixon
