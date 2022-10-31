@@ -11,7 +11,12 @@
 #   brew install jdupes
 #   jdupes . --no-hidden --recurse --size -X size+:50m
 #
-set -e
+set -o errexit
+set -o nounset
+set -o pipefail
+if [[ "${TRACE-0}" == "1" ]]; then
+    set -o xtrace
+fi
 
 backup_disks=( /Volumes/backup*/ )
 num_backups=${#backup_disks[*]}
