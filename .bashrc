@@ -156,6 +156,9 @@ bind "TAB:menu-complete"
 # Cycle backward with shift+tab.
 bind '"\e[Z":menu-complete-backward'
 
+# Use Alt + . to insert last argument of previous command.
+bind -m vi-insert '"\e.": yank-last-arg'
+
 # Only works for complete, not menu-complete, so useless.
 set show-all-if-ambiguous on
 
