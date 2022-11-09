@@ -233,8 +233,6 @@ set spellcapcheck=
 " autocmd FileType javascript setlocal equalprg=js-beautify\ --stdin
 " autocmd FileType javascript AutoFormatBuffer prettier
 "
-map <C-a> <esc>ggVG<CR>
-
 set omnifunc=syntaxcomplete#Complete
 
 nnoremap <C-t> :History:<CR>
