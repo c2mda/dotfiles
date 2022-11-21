@@ -8,7 +8,7 @@ set vi-cmd-mode-string "-"
 
 # Switch to block cursor before executing a command.
 set keymap vi-insert
-RETURN: "\e\n"
+# RETURN: "\e\n"
 
 # Readline has a delay after pressing escape, reduce from 500ms to 50.
 set keyseq-timeout 50
@@ -17,3 +17,6 @@ set blink-matching-paren on
 set colored-stats on
 set colored-completion-prefix on
 set completion-ignore-case on
+
+# No bell on unnecessary backspace.
+set bell-style "none"
