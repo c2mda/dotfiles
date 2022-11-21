@@ -325,3 +325,6 @@ nnoremap <leader>jv :YcmCompleter GetDoc<CR>
 " Display tabs as \t.
 set list
 set listchars=tab:\\t
+
+" Disable all bells
+set belloff=all
