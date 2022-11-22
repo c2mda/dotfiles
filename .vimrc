@@ -273,10 +273,10 @@ hi SpellCap cterm=underline
 " Set the shell interactive, to allows bash aliases such as fd
 set shellcmdflag=-ic
 
-" For some reason set shiftwidth=2 or tabstop=2 is ignored, so use autocmd.
-autocmd FileType python set shiftwidth=2
-autocmd FileType python set tabstop=2
-autocmd FileType python set softtabstop=2
+" Indent 4 spaces in Python.
+autocmd FileType python set shiftwidth=4
+autocmd FileType python set tabstop=4
+autocmd FileType python set softtabstop=4
 
 " Search in buffers with FZF
 nnoremap <C-_> :Lines<CR>
