@@ -86,6 +86,9 @@ Plugin 'pedrohdz/vim-yaml-folds'
 " Move based on indent level, useful for YAML.
 Plugin 'jeetsukumaran/vim-indentwise'
 
+" Use bracketed mode to paste correctly
+Plugin 'ConradIrwin/vim-bracketed-paste'
+
 call vundle#end()
 call glaive#Install()
 else
@@ -320,6 +323,7 @@ let g:ycm_global_ycm_extra_conf = '~/global_extra_conf.py'
 " YCM commands to get documentation and go to definition
 " https://github.com/ycm-core/YouCompleteMe
 nnoremap <leader>jd :YcmCompleter GoTo<CR>
+nnoremap <leader>jr :YcmCompleter GoToReferences<CR>
 nnoremap <leader>jv :YcmCompleter GetDoc<CR>
 
 " Display tabs as \t.
