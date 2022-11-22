@@ -198,3 +198,6 @@ fi
 # Remove duplicate in PATH
 # https://unix.stackexchange.com/questions/40749/remove-duplicate-path-entries-with-awk-command
 PATH="$(perl -e 'print join(":", grep { not $seen{$_}++ } split(/:/, $ENV{PATH}))')"
+
+# Less should not use bell. Bell is still useful for alerts.
+export LESS="$LESS -Q"
