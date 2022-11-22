@@ -199,5 +199,10 @@ fi
 # https://unix.stackexchange.com/questions/40749/remove-duplicate-path-entries-with-awk-command
 PATH="$(perl -e 'print join(":", grep { not $seen{$_}++ } split(/:/, $ENV{PATH}))')"
 
-# Less should not use bell. Bell is still useful for alerts.
-export LESS="$LESS -Q"
+# Less config for git and others.
+# -e to quit at eof
+# -F to output single screen files directly
+# -R to output color sequence properly
+# -Q to avoid using terminal bell
+# -X to avoid clearing screen
+export LESS="$LESS -eQFRX"
