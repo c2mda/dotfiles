@@ -89,6 +89,9 @@ Plugin 'jeetsukumaran/vim-indentwise'
 " Use bracketed mode to paste correctly
 Plugin 'ConradIrwin/vim-bracketed-paste'
 
+" Smooth scroll
+Plugin 'psliwka/vim-smoothie'
+
 call vundle#end()
 call glaive#Install()
 else
@@ -242,8 +245,17 @@ nnoremap <C-t> :History:<CR>
 
 " Load installed plugins.
 packloadall
-let g:ale_fixers = {'python': ['reorder-python-imports','autopep8'], 'yaml': ['trim_whitespace']}
-let g:ale_linters = {'python': ['pylint'], 'yaml': ['yamllint']}
+let g:ale_fixers = {
+      \'python': ['reorder-python-imports','autopep8'],
+      \'yaml': ['trim_whitespace'],
+      \'cpp': ['clang-format'],
+      \}
+let g:ale_linters = {
+      \'python': ['pylint'], 
+      \'yaml': ['yamllint'],
+      \'cpp': ['clang'],
+      \}
+let g:ale_cpp_clang_options = '-Wall -O2 -std=c++1z'
 
 " Otherwise lnext errors when only one error in list.
 function! Lnextwrap()
@@ -271,7 +283,10 @@ hi SpellRare cterm=underline
 hi SpellCap cterm=underline
 
 " Set the shell interactive, to allows bash aliases such as fd
-set shellcmdflag=-ic
+" Actually setting the shell as interactive causes problems: when running
+" external command such as tmux select-pane, vim will get suspended.
+" Better way to have aliases available is to define them in .bash_profile
+" set shellcmdflag=-ic
 
 " Indent 4 spaces in Python.
 autocmd FileType python set shiftwidth=4
@@ -329,3 +344,4 @@ set listchars=tab:\\t
 
 " Disable all bells
 set belloff=all
+

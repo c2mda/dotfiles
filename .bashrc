@@ -64,27 +64,6 @@ p_dir() {
 export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 #########################################################################
-############################# ALIAS #####################################
-#########################################################################
-# Clear screen for real
-alias cls='printf "\033c" && tmux clear-history'
-
-# XClip
-alias xclip='xclip -selection c'
-
-# Python3
-alias python=python3
-
-#€ On debian fd is renamed fdfind
-if [ -f /usr/bin/fdfind ] && ! [ -f /opt/homebrew/bin/fd ]; then
-  FDFIND='/usr/bin/fdfind -I'
-else
-# Fd does not respect .gitignore
-  FDFIND='fd -I'
-fi
-alias fd="$FDFIND"
-
-#########################################################################
 ############################### FZF #####################################
 #########################################################################
 # Fzf completion
@@ -140,9 +119,6 @@ shopt -s checkwinsize
 
 export EDITOR=vim
 export TREE_CHARSET=ascii
-
-# Enable color support of ls and also add handy aliases
-alias ls='ls --color=auto -alh'
 
 # Disable Ctrl+S locking the terminal
 stty -ixon
