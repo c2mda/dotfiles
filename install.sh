@@ -13,14 +13,9 @@ maybe_copy () {
   from=$1
   to=$2
   if [ -e $to ] || [ -L $to ]; then
-    echo "File $to already exists, comparing."
     if ! cmp $from $to >/dev/null 2>&1; then
-      echo "Files $from and $to differ, removing $to."
-      rm $to
-      echo "Copying from $from to $to."
-      cp $from $to
-    else
-      echo "Files $from and $to match, skipping."
+      echo "Files $from and $to differ, overwriting $to."
+      cp -f $from $to
     fi
   else
     echo "File $to doesn't exist, copying from $from to $to."
@@ -32,10 +27,10 @@ maybe_copy () {
 git config --global user.email "cyprien.de.masson@gmail.com"
 git config --global user.name "Cyprien de Masson"
 
-maybe_copy ${folder}/.inputrc ~/.inputrc 
-maybe_copy ${folder}/.vimrc ~/.vimrc 
+maybe_copy ${folder}/.inputrc ~/.inputrc
+maybe_copy ${folder}/.vimrc ~/.vimrc
 maybe_copy ${folder}/.bash_profile ~/.bash_profile
-maybe_copy ${folder}/.bashrc ~/.bashrc 
+maybe_copy ${folder}/.bashrc ~/.bashrc
 maybe_copy ${folder}/.tmux.conf ~/.tmux.conf
 maybe_copy ${folder}/.pylintrc ~/.pylintrc
 maybe_copy ${folder}/rc ~/.ssh/rc
@@ -53,27 +48,34 @@ vim +PluginInstall +qall
 
 # Some stuff needed for YouCompleteMe in vim.
 # A bit heavy but couldn't find a good lighter autocomplete.
-sudo apt-get update
-sudo apt install build-essential cmake vim-nox python3-dev
-cd ~/.vim/bundle/YouCompleteMe
-python3 install.py --all
+if ! ( ls ~/.vim/bundle/YouCompleteMe/third_party/ycmd/ycm_core.*.so &> /dev/null ) ; then
+  sudo apt-get -qq -o=Dpkg::Use-Pty=0Q update
+  sudo apt-get -qq -o=Dpkg::Use-Pty=0Q install --no-upgrade build-essential \
+    cmake vim-nox python3-dev
+  cd ~/.vim/bundle/YouCompleteMe
+  python3 install.py --all
+fi
 
 # Required for Python3 formatting.
-pip install autopep8, reorder-python-imports, pylint
+pip install --quiet autopep8 reorder-python-imports pylint
 
 # Install FZF
-git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-~/.fzf/install --key-bindings --completion --update-rc
+if [[ ! -a "$HOME/.fzf" ]]; then
+  git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+  ~/.fzf/install --key-bindings --completion --update-rc
+fi
 
 # Install fd finder
-sudo apt install fd-find
+sudo apt-get -qq -o=Dpkg::Use-Pty=0Q install --no-upgrade fd-find
 
 # Install kubectl.
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-chmod +x ./kubectl
-sudo mv ./kubectl /usr/local/bin/kubectl
-sudo mkdir -p ~/.kube
+if [[ ! -a /usr/local/bin/kubectl ]]; then
+  curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+  chmod +x ./kubectl
+  sudo mv ./kubectl /usr/local/bin/kubectl
+  sudo mkdir -p ~/.kube
+fi
 # sudo cp /mnt/volumetrialcyp/cw-kubeconfig ~/.kube/config
 
-# Install useful stuff.
-sudo apt install python3.8-venv
+# Install virtual env.
+sudo apt-get -qq -o=Dpkg::Use-Pty=0Q install --no-upgrade python3.8-venv
