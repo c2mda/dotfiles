@@ -33,7 +33,8 @@ ignore-patterns=^\.#
 
 # Python code to execute, usually for sys.path manipulation such as
 # pygtk.require().
-#init-hook=
+# For some reason pylint in virtualenv marks cwd imports as missing unless we add it explicitly.
+init-hook="import os; import sys; sys.path.append(os.getcwd())"
 
 # Use multiple processes to speed up Pylint. Specifying 0 will auto-detect the
 # number of processors available to use.
@@ -289,7 +290,7 @@ indent-after-paren=4
 
 # String used as indentation unit. This is usually "    " (4 spaces) or "\t" (1
 # tab).
-indent-string='  '
+indent-string='    '
 
 # Maximum number of characters on a single line.
 max-line-length=100

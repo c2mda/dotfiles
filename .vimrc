@@ -304,6 +304,11 @@ let g:camelcasemotion_key = ','
 " packages and claims import are failing.
 let g:ale_use_global_executables = 0
 
+" By default pylint runs from directory of global pylintrc.
+" But we set init-hook in .pylintrc to add cwd to sys.path
+" So runs pylint from current directory instead.
+let g:ale_python_pylint_change_directory = 0
+
 " After every yank copy to current terminal system clipboard using OSC52
 " https://github.com/ojroques/vim-oscyank
 autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | execute 'OSCYankReg "' | endif
