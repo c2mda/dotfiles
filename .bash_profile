@@ -24,4 +24,7 @@ if [[ $OSTYPE == 'darwin'* ]]; then
   export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 fi
 
+# Add $HOME/.local/bin to PATH (pip installs command line scripts there).
+export PATH=$HOME/.local/bin:$PATH
+
 source ~/.bashrc
