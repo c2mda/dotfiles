@@ -27,4 +27,8 @@ fi
 # Add $HOME/.local/bin to PATH (pip installs command line scripts there).
 export PATH=$HOME/.local/bin:$PATH
 
+if [ -f ~/.git-completion.bash ]; then
+  . ~/.git-completion.bash
+fi
+
 source ~/.bashrc
