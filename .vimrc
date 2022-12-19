@@ -247,7 +247,7 @@ nnoremap <C-t> :History:<CR>
 packloadall
 let g:ale_fixers = {
       \'python': ['reorder-python-imports','autopep8'],
-      \'yaml': ['trim_whitespace'],
+      \'yaml': ['trim_whitespace', 'prettier'],
       \'cpp': ['clang-format'],
       \}
 let g:ale_linters = {
@@ -256,6 +256,9 @@ let g:ale_linters = {
       \'cpp': ['clang'],
       \}
 let g:ale_cpp_clang_options = '-Wall -O2 -std=c++1z'
+
+" Yamllint doesn't like spaces after curly brackets.
+let g:ale_javascript_prettier_options='--bracket-spacing=false'
 
 " Otherwise lnext errors when only one error in list.
 function! Lnextwrap()
