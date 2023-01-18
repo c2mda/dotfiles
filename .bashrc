@@ -80,7 +80,7 @@ else
 # Fd does not respect .gitignore
   FDFIND='fd -I'
 fi
-export FZF_DEFAULT_OPTS='--exact --bind "alt-a:select-all,alt-d:deselect-all"'
+export FZF_DEFAULT_OPTS='--exact --bind "ctrl-a:select-all,ctrl-d:deselect-all,ctrl-t:toggle-all"'
 export FZF_DEFAULT_COMMAND="${FDFIND} --type f --hidden --follow --exclude .git --exclude /Library --exclude \"Google Drive/.My Drive\""
 export FZF_CTRL_T_COMMAND="${FDFIND} --type f --hidden --follow --exclude .git --exclude /Library --exclude \"Google Drive/.My Drive\""
 export FZF_ALT_C_COMMAND="${FDFIND} --type d --hidden --exclude .git --exclude /Library --exclude \"Google Drive/.My Drive\""
