@@ -23,16 +23,25 @@ HISTTIMEFORMAT="%d%m%Y %T "
 #########################################################################
 ############################# PROMPT ####################################
 #########################################################################
-GREEN='\033[0;32m'
 RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
 BLUE='\033[0;34m'
+MAGENTA='\033[0;35m'
 NC='\033[0m' # No color.
 HOMEMACHINE="XMBPPersoM12021.station"
 HOMEMACHINE2="X-MBP-Perso-M1-2021.local"
+DEV_MACHINE="cypsmall3"
+PROD_SERVER="prodserver"
+STAGING_SERVER="staging"
 if [[ ${HOSTNAME} = ${HOMEMACHINE} || ${HOSTNAME} = ${HOMEMACHINE2} ]]; then
-  PCOLORHN=${RED}
-else
+  PCOLORHN=${RED}j
+elif [[ ${HOSTNAME} = ${DEV_MACHINE} ]]; then
   PCOLORHN=${BLUE}
+elif [[ ${HOSTNAME} = ${STAGING_SERVER} ]]; then
+  PCOLORHN=${GREEN}
+elif [[ ${HOSTNAME} = ${PROD_SERVER} ]]; then
+  PCOLORHN=${YELLOW}
 fi
 PS1="${PCOLORHN}>>>${GREEN}\$(pwd) ${NC}\n "
 
