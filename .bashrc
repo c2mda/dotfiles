@@ -35,7 +35,7 @@ DEV_MACHINE="cypsmall3"
 PROD_SERVER="prodserver"
 STAGING_SERVER="staging"
 if [[ ${HOSTNAME} = ${HOMEMACHINE} || ${HOSTNAME} = ${HOMEMACHINE2} ]]; then
-  PCOLORHN=${RED}j
+  PCOLORHN=${RED}
 elif [[ ${HOSTNAME} = ${DEV_MACHINE} ]]; then
   PCOLORHN=${BLUE}
 elif [[ ${HOSTNAME} = ${STAGING_SERVER} ]]; then
