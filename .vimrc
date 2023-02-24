@@ -220,7 +220,7 @@ let g:NERDCommentEmptyLines = 1
 
 " Remove trailing whitespace.
 command FixWhitespace %s/\s\+$//e
-map <leader>fw :FixWhitespace
+map <leader>fw :FixWhitespace<CR>
 
 " Allow switching buffers without saving.
 set hidden
