@@ -12,92 +12,72 @@ set statusline+=%m      "modified flag
 " Swap files: all in same directory
 set directory=$HOME/.vim/swap/
 
-"======================"
-" Vundle configuration "
-"======================"
-" Install plugins that come from github.  Once Vundle is installed, these can be
-" installed with :PluginInstall
 filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
-if isdirectory(expand('$HOME/.vim/bundle/Vundle.vim'))
-call vundle#begin()
-" Required
-Plugin 'gmarik/vundle'
 
-" No longer using syntastic.
-" Plugin 'vim-syntastic/syntastic'
+"" Install vim-plug if we don't already have it
+if empty(glob('~/.vim/autoload/plug.vim'))
+silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+call plug#begin('~/.vim/plugged')
 
 " Asynchronous linter.
-Plugin 'dense-analysis/ale'
+Plug 'dense-analysis/ale'
 
 " To comment/uncomment.
-Plugin 'preservim/nerdcommenter'
+Plug 'preservim/nerdcommenter'
 
 " To move through names with _
-Plugin 'bkad/CamelCaseMotion'
+Plug 'bkad/CamelCaseMotion'
 
 " Maktaba: Google vimscript utility.
-Plugin 'google/vim-maktaba'
+Plug 'google/vim-maktaba'
 
 " Codefmt: Google code formatter.
-Plugin 'google/vim-codefmt'
+Plug 'google/vim-codefmt'
 
 " Glaive: Google vim config manager.
-Plugin 'google/vim-glaive'
+Plug 'google/vim-glaive'
 
 " Vim tmux navigator
-Plugin 'christoomey/vim-tmux-navigator'
+Plug 'christoomey/vim-tmux-navigator'
 
 " FZF.
-Plugin 'junegunn/fzf'
-Plugin 'junegunn/fzf.vim'
-
-" Vim outline window.
-" Doesn't work great.
-" Plugin 'vim-voom/VOoM'
-
-" For autocompletion in Python.
-" Actually jedi is not great compared to youcompleteme.
-" Plugin 'davidhalter/jedi-vim'
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
 
 " Autocomplete.
 " Also needs:
 " sudo apt install build-essential cmake vim-nox python3-dev
 " cd ~/.vim/bundle/YouCompleteMe
 " python3 install.py --all
-Plugin 'ycm-core/YouCompleteMe'
+Plug 'ycm-core/YouCompleteMe'
 
 " For automatic deletion of swap files.
-Plugin 'gioele/vim-autoswap'
-
-" Tmux vim clipboard integration
-" Doesnt work, broken.
-" Plugin 'roxma/vim-tmux-clipboard'
+Plug 'gioele/vim-autoswap'
 
 " Use OSC52 for clipboard, not X11 (X11 slow on connection)
-Plugin 'ojroques/vim-oscyank'
+Plug 'ojroques/vim-oscyank'
 
 " Indent visible in yaml files.
-Plugin 'Yggdroot/indentLine'
+Plug 'Yggdroot/indentLine'
 
 " Correct folds in yaml.
-Plugin 'pedrohdz/vim-yaml-folds'
+Plug 'pedrohdz/vim-yaml-folds'
 
 " Move based on indent level, useful for YAML.
-Plugin 'jeetsukumaran/vim-indentwise'
+Plug 'jeetsukumaran/vim-indentwise'
 
 " Use bracketed mode to paste correctly
-Plugin 'ConradIrwin/vim-bracketed-paste'
+Plug 'ConradIrwin/vim-bracketed-paste'
 
 " Smooth scroll
-Plugin 'psliwka/vim-smoothie'
+Plug 'psliwka/vim-smoothie'
 
-call vundle#end()
+call plug#end()
 call glaive#Install()
-else
-echomsg 'Vundle is not installed. You can install Vundle from'
-    \ 'https://github.com/VundleVim/Vundle.vim'
-endif
 
 filetype plugin indent on
 
@@ -150,21 +130,9 @@ endif
 " map <leader>fc :FormatCode <CR>
 map <leader>fc :ALEFix<CR>
 
-" Map \sc to SyntasticCheck
-" map <leader>sc :write<CR>:SyntasticCheck<CR>
-" let g:syntastic_mode_map = {'mode': 'passive'}  " No syntax check on :w
-" let g:syntastic_always_populate_loc_list = 1
-" let g:syntastic_auto_loc_list = 0
-" let g:syntastic_check_on_open = 0
-" let g:syntastic_check_on_wq = 0
-" let g:syntastic_python_checker_args="--single-file=y"
-" let g:syntastic_auto_jump = 1
-" let g:syntastic_javascript_checkers=['eslint']
-" let g:syntastic_html_checkers=['validator']
- map <leader>sc :write<CR>:ALELint<CR>
+map <leader>sc :write<CR>:ALELint<CR>
 
-
-" Map \fsc to format + syntastic
+" Map \fsc to format + lint 
 map <leader>fsc :write<CR>:ALEFix<CR>:write<CR>:ALELint<CR>
 
 " File types to autoformat on save
@@ -246,13 +214,13 @@ nnoremap <C-t> :History:<CR>
 " Load installed plugins.
 packloadall
 let g:ale_fixers = {
-      \'python': ['reorder-python-imports','autopep8'],
+      \'python': ['reorder-python-imports','ruff'],
       \'yaml': ['trim_whitespace', 'prettier'],
       \'cpp': ['clang-format'],
       \'markdown': ['pandoc'],
       \}
 let g:ale_linters = {
-      \'python': ['pylint'], 
+      \'python': ['ruff'], 
       \'yaml': ['yamllint'],
       \'cpp': ['clang'],
       \'markdown': ['pandoc'],
@@ -356,4 +324,3 @@ set listchars=tab:\\t
 
 " Disable all bells
 set belloff=all
-
