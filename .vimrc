@@ -214,7 +214,7 @@ nnoremap <C-t> :History:<CR>
 " Load installed plugins.
 packloadall
 let g:ale_fixers = {
-      \'python': ['reorder-python-imports','ruff'],
+      \'python': ['black', 'ruff'],
       \'yaml': ['trim_whitespace', 'prettier'],
       \'cpp': ['clang-format'],
       \'markdown': ['pandoc'],
