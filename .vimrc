@@ -14,7 +14,7 @@ set directory=$HOME/.vim/swap/
 
 filetype off
 
-"" Install vim-plug if we don't already have it
+" Install vim-plug if we don't already have it
 if empty(glob('~/.vim/autoload/plug.vim'))
 silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
