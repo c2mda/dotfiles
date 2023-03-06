@@ -1,5 +1,5 @@
 # Clear screen for real
-alias cls='printf "\033c" && tmux clear-history'
+alias cls='printf "\033c" && [ -n "$TMUX" ] && tmux clear-history'
 
 # XClip
 alias xclip='xclip -selection c'
