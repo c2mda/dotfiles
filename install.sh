@@ -38,13 +38,14 @@ maybe_copy ${folder}/rc ~/.ssh/rc
 # Setup vim swap folder.
 mkdir -p ~/.vim/swap
 
-# Install Vundle.
-if ! [ -d ~/.vim/bundle/Vundle.vim ]; then
-  git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+# Install vim-plug.
+if ! [ -d ~/.vim/autoload/plug.vim ]; then
+  curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 fi
 
 # Install vim plugins.
-vim +PluginInstall +qall
+vim +PlugInstall
 
 # Some stuff needed for YouCompleteMe in vim.
 # A bit heavy but couldn't find a good lighter autocomplete.
@@ -52,7 +53,7 @@ if ! ( ls ~/.vim/bundle/YouCompleteMe/third_party/ycmd/ycm_core.*.so &> /dev/nul
   sudo apt-get -qq -o=Dpkg::Use-Pty=0Q update
   sudo apt-get -qq -o=Dpkg::Use-Pty=0Q install --no-upgrade build-essential \
     cmake vim-nox python3-dev
-  cd ~/.vim/bundle/YouCompleteMe
+  cd ~/.vim/plugged/YouCompleteMe
   python3 install.py --all
 fi
 
