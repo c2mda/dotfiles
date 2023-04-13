@@ -35,7 +35,8 @@ maybe_copy ${folder}/.tmux.conf ~/.tmux.conf
 maybe_copy ${folder}/.pylintrc ~/.pylintrc
 maybe_copy ${folder}/rc ~/.ssh/rc
 
-source ~/.bashrc
+source ~/.bash_profile
+tmux source ~/.tmux.conf
 
 # Install FZF
 if [[ ! -a "$HOME/.fzf" ]]; then
