@@ -35,6 +35,17 @@ maybe_copy ${folder}/.tmux.conf ~/.tmux.conf
 maybe_copy ${folder}/.pylintrc ~/.pylintrc
 maybe_copy ${folder}/rc ~/.ssh/rc
 
+source ~/.bashrc
+
+# Install FZF
+if [[ ! -a "$HOME/.fzf" ]]; then
+  git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+  ~/.fzf/install --key-bindings --completion --update-rc
+fi
+
+# Install fd finder
+sudo apt-get -qq -o=Dpkg::Use-Pty=0Q install --no-upgrade fd-find
+
 # Setup vim swap folder.
 mkdir -p ~/.vim/swap
 
@@ -45,7 +56,7 @@ if ! [ -d ~/.vim/autoload/plug.vim ]; then
 fi
 
 # Install vim plugins.
-vim +PlugInstall
+vim +PlugInstall +qall
 
 # Some stuff needed for YouCompleteMe in vim.
 # A bit heavy but couldn't find a good lighter autocomplete.
@@ -54,20 +65,14 @@ if ! ( ls ~/.vim/bundle/YouCompleteMe/third_party/ycmd/ycm_core.*.so &> /dev/nul
   sudo apt-get -qq -o=Dpkg::Use-Pty=0Q install --no-upgrade build-essential \
     cmake vim-nox python3-dev
   cd ~/.vim/plugged/YouCompleteMe
-  python3 install.py --all
+  python3 install.py
 fi
+
+# Install pip
+sudo apt-get -qq -o=Dpkg::Use-Pty=0Q install --no-upgrade python3-pip
 
 # Required for Python3 formatting.
 pip install --quiet autopep8 reorder-python-imports pylint
-
-# Install FZF
-if [[ ! -a "$HOME/.fzf" ]]; then
-  git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-  ~/.fzf/install --key-bindings --completion --update-rc
-fi
-
-# Install fd finder
-sudo apt-get -qq -o=Dpkg::Use-Pty=0Q install --no-upgrade fd-find
 
 # Install kubectl.
 if [[ ! -a /usr/local/bin/kubectl ]]; then
