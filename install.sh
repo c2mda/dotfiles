@@ -35,29 +35,8 @@ maybe_copy ${folder}/.tmux.conf ~/.tmux.conf
 maybe_copy ${folder}/.pylintrc ~/.pylintrc
 maybe_copy ${folder}/rc ~/.ssh/rc
 
-# Setup vim swap folder.
-mkdir -p ~/.vim/swap
-
-# Install Vundle.
-if ! [ -d ~/.vim/bundle/Vundle.vim ]; then
-  git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-fi
-
-# Install vim plugins.
-vim +PluginInstall +qall
-
-# Some stuff needed for YouCompleteMe in vim.
-# A bit heavy but couldn't find a good lighter autocomplete.
-if ! ( ls ~/.vim/bundle/YouCompleteMe/third_party/ycmd/ycm_core.*.so &> /dev/null ) ; then
-  sudo apt-get -qq -o=Dpkg::Use-Pty=0Q update
-  sudo apt-get -qq -o=Dpkg::Use-Pty=0Q install --no-upgrade build-essential \
-    cmake vim-nox python3-dev
-  cd ~/.vim/bundle/YouCompleteMe
-  python3 install.py --all
-fi
-
-# Required for Python3 formatting.
-pip install --quiet autopep8 reorder-python-imports pylint
+source ~/.bash_profile
+tmux source ~/.tmux.conf
 
 # Install FZF
 if [[ ! -a "$HOME/.fzf" ]]; then
@@ -67,6 +46,34 @@ fi
 
 # Install fd finder
 sudo apt-get -qq -o=Dpkg::Use-Pty=0Q install --no-upgrade fd-find
+
+# Setup vim swap folder.
+mkdir -p ~/.vim/swap
+
+# Install vim-plug.
+if ! [ -d ~/.vim/autoload/plug.vim ]; then
+  curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+fi
+
+# Install vim plugins.
+vim +PlugInstall +qall
+
+# Some stuff needed for YouCompleteMe in vim.
+# A bit heavy but couldn't find a good lighter autocomplete.
+if ! ( ls ~/.vim/bundle/YouCompleteMe/third_party/ycmd/ycm_core.*.so &> /dev/null ) ; then
+  sudo apt-get -qq -o=Dpkg::Use-Pty=0Q update
+  sudo apt-get -qq -o=Dpkg::Use-Pty=0Q install --no-upgrade build-essential \
+    cmake vim-nox python3-dev
+  cd ~/.vim/plugged/YouCompleteMe
+  python3 install.py
+fi
+
+# Install pip
+sudo apt-get -qq -o=Dpkg::Use-Pty=0Q install --no-upgrade python3-pip
+
+# Required for Python3 formatting.
+pip install --quiet autopep8 reorder-python-imports pylint
 
 # Install kubectl.
 if [[ ! -a /usr/local/bin/kubectl ]]; then
