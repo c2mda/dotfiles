@@ -14,7 +14,7 @@ set directory=$HOME/.vim/swap/
 
 filetype off
 
-" Install vim-plug if we don't already have it
+"" Install vim-plug if we don't already have it
 if empty(glob('~/.vim/autoload/plug.vim'))
 silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -213,19 +213,26 @@ nnoremap <C-t> :History:<CR>
 
 " Load installed plugins.
 packloadall
+" Yamlfix is good but indentation doesnt agree with yamllint
+" prettier + yamlfix seems to agree with yamllint
+" But yamlfix removes all formatting in yaml args=[..]
+" Removing yamlfix.
 let g:ale_fixers = {
       \'python': ['black', 'ruff'],
-      \'yaml': ['trim_whitespace', 'prettier'],
+      \'yaml': ['trim_whitespace', 'prettier'], 
       \'cpp': ['clang-format'],
       \'markdown': ['pandoc'],
+      \'sh': ['trim_whitespace', 'remove_trailing_lines', 'shfmt'],
       \}
 let g:ale_linters = {
       \'python': ['ruff'], 
       \'yaml': ['yamllint'],
       \'cpp': ['clang'],
       \'markdown': ['pandoc'],
+      \'sh': ['shell'],
       \}
 let g:ale_cpp_clang_options = '-Wall -O2 -std=c++1z'
+let g:ale_sh_shfmt_options = '-i 2' " Indent shell script with 2 spaces.
 
 " Yamllint doesn't like spaces after curly brackets.
 let g:ale_javascript_prettier_options='--bracket-spacing=false'
@@ -324,3 +331,10 @@ set listchars=tab:\\t
 
 " Disable all bells
 set belloff=all
+
+" ZZ also exits command line window (opened with q:)
+" https://superuser.com/questions/286985/reload-vimrc-in-vim-without-restart
+augroup CommandLineWindow
+    autocmd!
+    autocmd CmdwinEnter * nnoremap <buffer> ZZ :q<cr>
+augroup END
