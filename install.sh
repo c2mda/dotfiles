@@ -44,8 +44,9 @@ if [[ ! -a "$HOME/.fzf" ]]; then
   ~/.fzf/install --key-bindings --completion --update-rc
 fi
 
-# Install fd finder
-sudo apt-get -qq -o=Dpkg::Use-Pty=0Q install --no-upgrade fd-find
+# Install fd finder and aws cli
+sudo apt-get update
+sudo apt-get -qq -o=Dpkg::Use-Pty=0Q install --no-upgrade fd-find awscli
 
 # Setup vim swap folder.
 mkdir -p ~/.vim/swap
