@@ -26,7 +26,7 @@ HISTTIMEFORMAT="%d%m%Y %T "
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
-BLUE='\033[0;34m'
+BLUE='\033[0;94m'
 MAGENTA='\033[0;35m'
 NC='\033[0m' # No color.
 HOMEMACHINE="XMBPPersoM12021.station"
@@ -43,7 +43,7 @@ elif [[ ${HOSTNAME} = ${STAGING_SERVER} ]]; then
 elif [[ ${HOSTNAME} = ${PROD_SERVER} ]]; then
   PCOLORHN=${YELLOW}
 fi
-PS1="${PCOLORHN}>>>${GREEN}\$(pwd) ${NC}\n "
+PS1="${PCOLORHN}\u@\h>>>${GREEN}\$(pwd) ${NC}\n "
 
 # Save and reload the history after each command finishes
 export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
