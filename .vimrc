@@ -292,7 +292,7 @@ let g:ale_python_pylint_change_directory = 0
 
 " After every yank copy to current terminal system clipboard using OSC52
 " https://github.com/ojroques/vim-oscyank
-autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | execute 'OSCYankReg "' | endif
+autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | execute 'OSCYankRegister "' | endif
 
 " Yaml indentation 2 spaces.
 autocmd FileType yaml setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
