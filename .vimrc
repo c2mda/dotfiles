@@ -74,7 +74,11 @@ Plug 'jeetsukumaran/vim-indentwise'
 Plug 'ConradIrwin/vim-bracketed-paste'
 
 " Smooth scroll
-Plug 'psliwka/vim-smoothie'
+" Plug 'psliwka/vim-smoothie'
+
+" Git 
+Plug 'tpope/vim-fugitive'
+
 
 call plug#end()
 call glaive#Install()
