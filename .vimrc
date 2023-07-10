@@ -76,6 +76,9 @@ Plug 'ConradIrwin/vim-bracketed-paste'
 " Smooth scroll
 Plug 'psliwka/vim-smoothie'
 
+" Git tools
+Plug 'tpope/vim-fugitive'
+
 call plug#end()
 call glaive#Install()
 
