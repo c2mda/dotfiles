@@ -80,6 +80,9 @@ Plug 'ConradIrwin/vim-bracketed-paste'
 Plug 'tpope/vim-fugitive'
 
 
+" Git tools
+Plug 'tpope/vim-fugitive'
+
 call plug#end()
 call glaive#Install()
 
