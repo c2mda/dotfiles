@@ -23,27 +23,28 @@ HISTTIMEFORMAT="%d%m%Y %T "
 #########################################################################
 ############################# PROMPT ####################################
 #########################################################################
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[0;33m'
-BLUE='\033[0;94m'
-MAGENTA='\033[0;35m'
-NC='\033[0m' # No color.
-HOMEMACHINE="XMBPPersoM12021.station"
-HOMEMACHINE2="X-MBP-Perso-M1-2021.local"
-DEV_MACHINE="cypsmall3"
-PROD_SERVER="prodserver"
-STAGING_SERVER="staging"
-if [[ ${HOSTNAME} = ${HOMEMACHINE} || ${HOSTNAME} = ${HOMEMACHINE2} ]]; then
-  PCOLORHN=${RED}
-elif [[ ${HOSTNAME} = ${DEV_MACHINE} ]]; then
-  PCOLORHN=${BLUE}
-elif [[ ${HOSTNAME} = ${STAGING_SERVER} ]]; then
-  PCOLORHN=${GREEN}
-elif [[ ${HOSTNAME} = ${PROD_SERVER} ]]; then
-  PCOLORHN=${YELLOW}
-fi
-PS1="${PCOLORHN}\u@\h>>>${GREEN}\$(pwd) ${NC}\n "
+function get_color()
+{
+  local RED='\033[0;31m'
+  local GREEN='\033[0;32m'
+  local YELLOW='\033[0;33m'
+  local BLUE='\033[0;34m'
+  local MAGENTA='\033[0;35m'
+  local NC='\033[0m' # No color.
+  local HOMEMACHINE="XMBPPersoM12021.station"
+  local HOMEMACHINE2="X-MBP-Perso-M1-2021.local"
+  local HN_COLORS=("$RED" "$GREEN" "$YELLOW" "$BLUE" "$MAGENTA")
+  # Compare in lowercase with ,,
+  if [[ "${HOSTNAME,,}" = "${HOMEMACHINE,,}" || "${HOSTNAME,,}" = "${HOMEMACHINE2,,}" ]]; then
+    echo "${RED}"
+  else
+    local num_colors=${#HN_COLORS[@]}
+    local color_index
+    color_index=$(hostname | cksum | cut -f1 -d' ')
+    echo "${HN_COLORS[$((color_index%num_colors-1))]}"
+  fi
+}
+PS1="$(get_color)>>>${GREEN}\$(pwd) ${NC}\n "
 
 # Save and reload the history after each command finishes
 export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
@@ -73,7 +74,8 @@ export FZF_ALT_C_COMMAND="${FDFIND} --type d --hidden --exclude .git --exclude /
 # Adapted from fzf/0.30.0/shell/key-bindings.bash fzf-file-widget
 # Assume bash version > 4.0
 fzf-vi-widget() {
-  local selected="$(__fzf_select__)"
+  local selected
+  selected="$(__fzf_select__)"
   READLINE_LINE="vi $selected"
 }
 bind -m vi-command -x '"\C-e": fzf-vi-widget'
@@ -94,7 +96,8 @@ __fzf_select_path__() {
   echo
 }
 fzf-path-widget(){
-  local selected="$(__fzf_select_path__)"
+  local selected
+  selected="$(__fzf_select_path__)"
   READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}$selected${READLINE_LINE:$READLINE_POINT}"
   READLINE_POINT=$(( READLINE_POINT + ${#selected} ))
 }
@@ -148,7 +151,7 @@ export LS_COLORS
 #########################################################################
 if [[ $OSTYPE == 'darwin'* ]]; then
   # Add brew path to PATH
-  eval $(/opt/homebrew/bin/brew shellenv)
+  eval "$(/opt/homebrew/bin/brew shellenv)"
 
   # The next line updates PATH for the Google Cloud SDK.
   if [ -f '/Users/x/google-cloud-sdk/path.bash.inc' ]; then . '/Users/x/google-cloud-sdk/path.bash.inc'; fi
