@@ -14,7 +14,7 @@ set directory=$HOME/.vim/swap/
 
 filetype off
 
-" Install vim-plug if we don't already have it
+"" Install vim-plug if we don't already have it
 if empty(glob('~/.vim/autoload/plug.vim'))
 silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -74,7 +74,11 @@ Plug 'jeetsukumaran/vim-indentwise'
 Plug 'ConradIrwin/vim-bracketed-paste'
 
 " Smooth scroll
-Plug 'psliwka/vim-smoothie'
+" Plug 'psliwka/vim-smoothie'
+
+" Git 
+Plug 'tpope/vim-fugitive'
+
 
 call plug#end()
 call glaive#Install()
@@ -213,11 +217,15 @@ nnoremap <C-t> :History:<CR>
 
 " Load installed plugins.
 packloadall
+" Yamlfix is good but indentation doesnt agree with yamllint
+" prettier + yamlfix seems to agree with yamllint
+      " \'yaml': ['trim_whitespace', 'yamlfix', 'prettier'], 
 let g:ale_fixers = {
-      \'python': ['black', 'ruff'],
-      \'yaml': ['trim_whitespace', 'prettier'],
+      \'python': ['black', 'trim_whitespace', 'ruff', 'autopep8'],
+      \'yaml': ['trim_whitespace', 'prettier'], 
       \'cpp': ['clang-format'],
       \'markdown': ['pandoc'],
+      \'sh': ['trim_whitespace', 'remove_trailing_lines', 'shfmt'],
       \}
 let g:ale_linters = {
       \'python': ['ruff'], 
@@ -227,6 +235,7 @@ let g:ale_linters = {
       \'sh': ['shellcheck'],
       \}
 let g:ale_cpp_clang_options = '-Wall -O2 -std=c++1z'
+let g:ale_sh_shfmt_options = '-i 2' " Indent shell script with 2 spaces.
 
 " Yamllint doesn't like spaces after curly brackets.
 let g:ale_javascript_prettier_options='--bracket-spacing=false'
@@ -287,7 +296,7 @@ let g:ale_python_pylint_change_directory = 0
 
 " After every yank copy to current terminal system clipboard using OSC52
 " https://github.com/ojroques/vim-oscyank
-autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | execute 'OSCYankReg "' | endif
+autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | execute 'OSCYankRegister "' | endif
 
 " Yaml indentation 2 spaces.
 autocmd FileType yaml setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
@@ -325,3 +334,10 @@ set listchars=tab:\\t
 
 " Disable all bells
 set belloff=all
+
+" ZZ also exits command line window (opened with q:)
+" https://superuser.com/questions/286985/reload-vimrc-in-vim-without-restart
+augroup CommandLineWindow
+    autocmd!
+    autocmd CmdwinEnter * nnoremap <buffer> ZZ :q<cr>
+augroup END
