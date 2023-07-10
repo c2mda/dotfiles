@@ -224,6 +224,7 @@ let g:ale_linters = {
       \'yaml': ['yamllint'],
       \'cpp': ['clang'],
       \'markdown': ['pandoc'],
+      \'sh': ['shellcheck'],
       \}
 let g:ale_cpp_clang_options = '-Wall -O2 -std=c++1z'
 
