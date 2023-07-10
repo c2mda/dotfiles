@@ -23,14 +23,15 @@ HISTTIMEFORMAT="%d%m%Y %T "
 #########################################################################
 ############################# PROMPT ####################################
 #########################################################################
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+MAGENTA='\033[0;35m'
+NC='\033[0m' # No color.
+
 function get_color()
 {
-  local RED='\033[0;31m'
-  local GREEN='\033[0;32m'
-  local YELLOW='\033[0;33m'
-  local BLUE='\033[0;34m'
-  local MAGENTA='\033[0;35m'
-  local NC='\033[0m' # No color.
   local HOMEMACHINE="XMBPPersoM12021.station"
   local HOMEMACHINE2="X-MBP-Perso-M1-2021.local"
   local HN_COLORS=("$RED" "$GREEN" "$YELLOW" "$BLUE" "$MAGENTA")
@@ -44,7 +45,7 @@ function get_color()
     echo "${HN_COLORS[$((color_index%num_colors-1))]}"
   fi
 }
-PS1="$(get_color)>>>${GREEN}\$(pwd) ${NC}\n "
+PS1="$(get_color)\u@\h>>>${GREEN}$(pwd) ${NC}\n "
 
 # Save and reload the history after each command finishes
 export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
