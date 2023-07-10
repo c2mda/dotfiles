@@ -40,8 +40,8 @@ function get_color()
   else
     local num_colors=${#HN_COLORS[@]}
     local color_index
-    color_index=$(hostname | cksum | cut -f1 -d' ' | awk -v n="${num_colors}" '{print ($0 % n)-1 }')
-    echo "${HN_COLORS[$color_index]}"
+    color_index=$(hostname | cksum | cut -f1 -d' ')
+    echo "${HN_COLORS[$((color_index%num_colors-1))]}"
   fi
 }
 PS1="$(get_color)>>>${GREEN}\$(pwd) ${NC}\n "
