@@ -32,11 +32,13 @@ NC='\033[0m' # No color.
 
 function get_color()
 {
-  local HOMEMACHINE="XMBPPersoM12021.station"
-  local HOMEMACHINE2="X-MBP-Perso-M1-2021.local"
   local HN_COLORS=("$RED" "$GREEN" "$YELLOW" "$BLUE" "$MAGENTA")
-  # Compare in lowercase with ,,
-  if [[ "${HOSTNAME,,}" = "${HOMEMACHINE,,}" || "${HOSTNAME,,}" = "${HOMEMACHINE2,,}" ]]; then
+  # Compare only letters.
+  local compare="${HOSTNAME//[^[:alpha:]]/}"
+  # Compare in lowercase.
+  local compare=${compare,,}
+  # Check if local machine.
+  if [[ "${compare}" = *"xmbppersom"* ]]; then
     echo "${RED}"
   else
     local num_colors=${#HN_COLORS[@]}
