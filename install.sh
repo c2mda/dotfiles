@@ -65,7 +65,7 @@ vim +PlugInstall +qall
 
 # Some stuff needed for YouCompleteMe in vim.
 # A bit heavy but couldn't find a good lighter autocomplete.
-if ! ( ls ~/.vim/bundle/YouCompleteMe/third_party/ycmd/ycm_core.*.so &> /dev/null ) ; then
+if ! ( ls ~/.vim/plugged/YouCompleteMe/third_party/ycmd/ycm_core.*.so &> /dev/null ) ; then
   sudo apt-get -qq -o=Dpkg::Use-Pty=0Q update
   sudo apt-get -qq -o=Dpkg::Use-Pty=0Q install --no-upgrade build-essential \
     cmake vim-nox python3-dev

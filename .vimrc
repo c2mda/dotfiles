@@ -74,7 +74,14 @@ Plug 'jeetsukumaran/vim-indentwise'
 Plug 'ConradIrwin/vim-bracketed-paste'
 
 " Smooth scroll
-Plug 'psliwka/vim-smoothie'
+" Plug 'psliwka/vim-smoothie'
+
+" Git 
+Plug 'tpope/vim-fugitive'
+
+
+" Git tools
+Plug 'tpope/vim-fugitive'
 
 call plug#end()
 call glaive#Install()
@@ -228,7 +235,7 @@ let g:ale_linters = {
       \'yaml': ['yamllint'],
       \'cpp': ['clang'],
       \'markdown': ['pandoc'],
-      \'sh': ['shell'],
+      \'sh': ['shellcheck'],
       \}
 let g:ale_cpp_clang_options = '-Wall -O2 -std=c++1z'
 let g:ale_sh_shfmt_options = '-i 2' " Indent shell script with 2 spaces.
