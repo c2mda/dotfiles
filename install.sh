@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -o nounset
 set -o pipefail
-set -x
 
 if [[ "${TRACE-0}" == "1" ]]; then
     set -o xtrace
