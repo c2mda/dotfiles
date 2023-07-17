@@ -33,10 +33,10 @@ function maybe_apt_install() {
     echo "Installing python3.8-venv"
 
     if [ ! "${apt_updated}" = true ]; then
-      apt-get -qq -o=Dpkg::Use-Pty=0Q update
+      sudo apt-get -qq -o=Dpkg::Use-Pty=0Q update
       apt_updated=true
     fi
-    apt-get -qq -o=Dpkg::Use-Pty=0Q install --no-upgrade "${package_name}"
+    sudo apt-get -qq -o=Dpkg::Use-Pty=0Q install --no-upgrade "${package_name}"
   else
     # Nothing installed.
     return 1
@@ -72,13 +72,17 @@ if [[ ! -a "$HOME/.fzf" ]]; then
 fi
 
 # Debian packages.
+
+# Needed for YCM
 maybe_apt_install "build-essential"
 maybe_apt_install "cmake"
 maybe_apt_install "vim-nox"
 maybe_apt_install "python3-dev"
-maybe_apt_install "python3.8-venv"
+
+# Generally useful.
 maybe_apt_install "fd-find"
 maybe_apt_install "awscli"
+maybe_apt_install "python3.8-venv"
 maybe_apt_install "python3-pip"
 if $?; then
   pip install --quiet autopep8 reorder-python-imports pylint black ruff
@@ -97,7 +101,6 @@ if [ ! -e ~/.vim/autoload/plug.vim ]; then
   # Some stuff needed for YouCompleteMe in vim.
   # A bit heavy but couldn't find a good lighter autocomplete.
   if ! ( ls ~/.vim/plugged/YouCompleteMe/third_party/ycmd/ycm_core.*.so &> /dev/null ) ; then
-    cmake vim-nox python3-dev
     cd ~/.vim/plugged/YouCompleteMe
     python3 install.py
   fi
@@ -108,7 +111,7 @@ if [[ ! -a /usr/local/bin/kubectl ]]; then
   echo "Installing kubectl"
   curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
   chmod +x ./kubectl
-  mv ./kubectl /usr/local/bin/kubectl
+  sudo mv ./kubectl /usr/local/bin/kubectl
   mkdir -p ~/.kube
 fi
 
