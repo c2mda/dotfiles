@@ -102,3 +102,9 @@ if ! dpkg-query --show --showformat='${db:Status-Status}\n' python3.8-venv &> /d
   sudo apt-get -qq -o=Dpkg::Use-Pty=0Q update
   sudo apt-get -qq -o=Dpkg::Use-Pty=0Q install --no-upgrade python3.8-venv
 fi
+
+if ! command -v oci --version &> /dev/null; then
+  echo "Installing Oracle CLI"
+  # https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/cliinstall.htm
+  bash <(curl -s https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh) --accept-all-defaults
+fi
