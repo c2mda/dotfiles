@@ -47,7 +47,8 @@ function get_color()
     echo "${HN_COLORS[$((color_index%num_colors-1))]}"
   fi
 }
-PS1="$(get_color)\u@\h>>>${GREEN}\w ${NC}\n "
+color=$(get_color)
+PS1="${color}\u@\h>>>${GREEN}\w ${NC}\n "
 
 # Save and reload the history after each command finishes
 export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
