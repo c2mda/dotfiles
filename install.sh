@@ -27,15 +27,15 @@ maybe_copy () {
 git config --global user.email "cyprien.de.masson@gmail.com"
 git config --global user.name "Cyprien de Masson"
 
-maybe_copy ${folder}/.inputrc ~/.inputrc
-maybe_copy ${folder}/.vimrc ~/.vimrc
-maybe_copy ${folder}/.bash_profile ~/.bash_profile
-maybe_copy ${folder}/.bashrc ~/.bashrc
-maybe_copy ${folder}/.tmux.conf ~/.tmux.conf
-maybe_copy ${folder}/.pylintrc ~/.pylintrc
-maybe_copy ${folder}/rc ~/.ssh/rc
+maybe_copy "${folder}/.inputrc" ~/.inputrc
+maybe_copy "${folder}/.vimrc ~/.vimrc
+maybe_copy "${folder}/.bash_profile ~/.bash_profile
+maybe_copy "${folder}/.bashrc ~/.bashrc
+maybe_copy "${folder}/.tmux.conf ~/.tmux.conf
+maybe_copy "${folder}/.pylintrc ~/.pylintrc
+maybe_copy "${folder}/rc ~/.ssh/rc
 
-source ~/.bash_profile
+source "${HOME}/.bash_profile"
 
 if [ ! -z "${TMUX:-}" ]; then
   tmux source ~/.tmux.conf
@@ -48,8 +48,10 @@ if [[ ! -a "$HOME/.fzf" ]]; then
 fi
 
 # Install fd finder and aws cli
-sudo apt-get update
-sudo apt-get -qq -o=Dpkg::Use-Pty=0Q install --no-upgrade fd-find awscli
+if ! dpkg-query --show --showformat='${db:Status-Status}\n' fd-find; then
+  sudo apt-get update
+  sudo apt-get -qq -o=Dpkg::Use-Pty=0Q install --no-upgrade fd-find awscli
+fi
 
 # Setup vim swap folder.
 mkdir -p ~/.vim/swap
@@ -58,26 +60,28 @@ mkdir -p ~/.vim/swap
 if ! [ -d ~/.vim/autoload/plug.vim ]; then
   curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-fi
 
-# Install vim plugins.
-vim +PlugInstall +qall
+  # Install vim plugins.
+  vim +PlugInstall +qall
 
-# Some stuff needed for YouCompleteMe in vim.
-# A bit heavy but couldn't find a good lighter autocomplete.
-if ! ( ls ~/.vim/plugged/YouCompleteMe/third_party/ycmd/ycm_core.*.so &> /dev/null ) ; then
-  sudo apt-get -qq -o=Dpkg::Use-Pty=0Q update
-  sudo apt-get -qq -o=Dpkg::Use-Pty=0Q install --no-upgrade build-essential \
-    cmake vim-nox python3-dev
-  cd ~/.vim/plugged/YouCompleteMe
-  python3 install.py
+  # Some stuff needed for YouCompleteMe in vim.
+  # A bit heavy but couldn't find a good lighter autocomplete.
+  if ! ( ls ~/.vim/plugged/YouCompleteMe/third_party/ycmd/ycm_core.*.so &> /dev/null ) ; then
+    sudo apt-get -qq -o=Dpkg::Use-Pty=0Q update
+    sudo apt-get -qq -o=Dpkg::Use-Pty=0Q install --no-upgrade build-essential \
+      cmake vim-nox python3-dev
+    cd ~/.vim/plugged/YouCompleteMe
+    python3 install.py
+  fi
 fi
 
 # Install pip
-sudo apt-get -qq -o=Dpkg::Use-Pty=0Q install --no-upgrade python3-pip
-
-# Required for Python3 formatting.
-pip install --quiet autopep8 reorder-python-imports pylint
+if ! dpkg-query --show --showformat='${db:Status-Status}\n' python3-pip; then
+  sudo apt-get update
+  sudo apt-get -qq -o=Dpkg::Use-Pty=0Q install --no-upgrade python3-pip
+  # Required for Python3 formatting.
+  pip install --quiet autopep8 reorder-python-imports pylint black ruff
+fi
 
 # Install kubectl.
 if [[ ! -a /usr/local/bin/kubectl ]]; then
@@ -89,4 +93,7 @@ fi
 # sudo cp /mnt/volumetrialcyp/cw-kubeconfig ~/.kube/config
 
 # Install virtual env.
-sudo apt-get -qq -o=Dpkg::Use-Pty=0Q install --no-upgrade python3.8-venv
+if ! dpkg-query --show --showformat='${db:Status-Status}\n' python3.8-venv; then
+  sudo apt-get update
+  sudo apt-get -qq -o=Dpkg::Use-Pty=0Q install --no-upgrade python3.8-venv
+fi
