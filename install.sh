@@ -80,7 +80,7 @@ fi
 # Debian packages.
 
 # Needed for YCM
-maybe_apt_install build-essential cmake vim-nox python3-dev
+maybe_apt_install build-essential cmake vim-nox python3-dev shellcheck
 
 # Generally useful.
 maybe_apt_install fd-find awscli python3.8-venv jq
