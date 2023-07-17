@@ -10,6 +10,7 @@ fi
 folder=$(dirname -- "$0";)
 
 maybe_copy () {
+  # Copy from -> to if differing or non existent.
   from=$1
   to=$2
   if [ -e "$to" ] || [ -L "$to" ]; then
@@ -79,10 +80,10 @@ fi
 # Debian packages.
 
 # Needed for YCM
-maybe_apt_install "build-essential" "cmake" "vim-nox" "python3-dev"
+maybe_apt_install build-essential cmake vim-nox python3-dev
 
 # Generally useful.
-maybe_apt_install "fd-find" "awscli" "python3.8-venv"
+maybe_apt_install fd-find awscli python3.8-venv jq
 
 maybe_apt_install "python3-pip"
 if [ $? = 0 ]; then  # If we just installed pip, install packages
