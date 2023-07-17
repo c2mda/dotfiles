@@ -2,7 +2,6 @@
 set -o errexit
 set -o nounset
 set -o pipefail
-set -x
 
 if [[ "${TRACE-0}" == "1" ]]; then
     set -o xtrace
@@ -44,8 +43,8 @@ if [ -n "${TMUX:-}" ]; then
   tmux source ~/.tmux.conf
 fi
 
-# Install FZF
 if [[ ! -a "$HOME/.fzf" ]]; then
+  echo "Installing FZF"
   git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
   ~/.fzf/install --key-bindings --completion --update-rc
   # Reload to get key bindings.
@@ -53,8 +52,8 @@ if [[ ! -a "$HOME/.fzf" ]]; then
   source ~/.bashrc
 fi
 
-# Install fd finder and aws cli
-if ! dpkg-query --show --showformat='${db:Status-Status}\n' fd-find; then
+if ! dpkg-query --show --showformat='${db:Status-Status}\n' fd-find &> /dev/null; then
+  echo "Installing fdfind and aws cli"
   sudo apt-get -qq -o=Dpkg::Use-Pty=0Q update
   sudo apt-get -qq -o=Dpkg::Use-Pty=0Q install --no-upgrade fd-find awscli
 fi
@@ -62,8 +61,8 @@ fi
 # Setup vim swap folder.
 mkdir -p ~/.vim/swap
 
-# Install vim-plug.
 if [ ! -e ~/.vim/autoload/plug.vim ]; then
+  echo "Installing vimplug"
   curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
@@ -81,16 +80,16 @@ if [ ! -e ~/.vim/autoload/plug.vim ]; then
   fi
 fi
 
-# Install pip
-if ! dpkg-query --show --showformat='${db:Status-Status}\n' python3-pip; then
+if ! dpkg-query --show --showformat='${db:Status-Status}\n' python3-pip &> /dev/null; then
+  echo "Installing pip"
   sudo apt-get -qq -o=Dpkg::Use-Pty=0Q update
   sudo apt-get -qq -o=Dpkg::Use-Pty=0Q install --no-upgrade python3-pip
   # Required for Python3 formatting.
   pip install --quiet autopep8 reorder-python-imports pylint black ruff
 fi
 
-# Install kubectl.
 if [[ ! -a /usr/local/bin/kubectl ]]; then
+  echo "Installing kubectl"
   curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
   chmod +x ./kubectl
   sudo mv ./kubectl /usr/local/bin/kubectl
@@ -98,8 +97,8 @@ if [[ ! -a /usr/local/bin/kubectl ]]; then
 fi
 # sudo cp /mnt/volumetrialcyp/cw-kubeconfig ~/.kube/config
 
-# Install virtual env.
-if ! dpkg-query --show --showformat='${db:Status-Status}\n' python3.8-venv; then
+if ! dpkg-query --show --showformat='${db:Status-Status}\n' python3.8-venv &> /dev/null; then
+  echo "Installing python3.8-venv"
   sudo apt-get -qq -o=Dpkg::Use-Pty=0Q update
   sudo apt-get -qq -o=Dpkg::Use-Pty=0Q install --no-upgrade python3.8-venv
 fi
