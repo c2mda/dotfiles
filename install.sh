@@ -12,14 +12,14 @@ folder=$(dirname -- "$0";)
 maybe_copy () {
   from=$1
   to=$2
-  if [ -e $to ] || [ -L $to ]; then
-    if ! cmp $from $to >/dev/null 2>&1; then
+  if [ -e "$to" ] || [ -L "$to" ]; then
+    if ! cmp "$from" "$to" >/dev/null 2>&1; then
       echo "Files $from and $to differ, overwriting $to."
-      cp -f $from $to
+      cp -f "$from" "$to"
     fi
   else
     echo "File $to doesn't exist, copying from $from to $to."
-    cp $from $to
+    cp "$from" "$to"
   fi
 }
 
@@ -27,17 +27,18 @@ maybe_copy () {
 git config --global user.email "cyprien.de.masson@gmail.com"
 git config --global user.name "Cyprien de Masson"
 
-maybe_copy "${folder}/.inputrc" ~/.inputrc
-maybe_copy "${folder}/.vimrc ~/.vimrc
-maybe_copy "${folder}/.bash_profile ~/.bash_profile
-maybe_copy "${folder}/.bashrc ~/.bashrc
-maybe_copy "${folder}/.tmux.conf ~/.tmux.conf
-maybe_copy "${folder}/.pylintrc ~/.pylintrc
-maybe_copy "${folder}/rc ~/.ssh/rc
+maybe_copy "${folder}/.inputrc" /.inputrc
+maybe_copy "${folder}/.vimrc" ~/.vimrc
+maybe_copy "${folder}/.bash_profile" ~/.bash_profile
+maybe_copy "${folder}/.bashrc" ~/.bashrc
+maybe_copy "${folder}/.tmux.conf" ~/.tmux.conf
+maybe_copy "${folder}/.pylintrc" ~/.pylintrc
+maybe_copy "${folder}/rc" ~/.ssh/rc
 
+# shellcheck source=/home/cyprien/.bash_profile
 source "${HOME}/.bash_profile"
 
-if [ ! -z "${TMUX:-}" ]; then
+if [ -n "${TMUX:-}" ]; then
   tmux source ~/.tmux.conf
 fi
 
@@ -45,11 +46,14 @@ fi
 if [[ ! -a "$HOME/.fzf" ]]; then
   git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
   ~/.fzf/install --key-bindings --completion --update-rc
+  # Reload to get key bindings.
+  # shellcheck source=/home/cyprien/.bashrc
+  source ~/.bashrc
 fi
 
 # Install fd finder and aws cli
 if ! dpkg-query --show --showformat='${db:Status-Status}\n' fd-find; then
-  sudo apt-get update
+  sudo apt-get -qq -o=Dpkg::Use-Pty=0Q update
   sudo apt-get -qq -o=Dpkg::Use-Pty=0Q install --no-upgrade fd-find awscli
 fi
 
@@ -77,7 +81,7 @@ fi
 
 # Install pip
 if ! dpkg-query --show --showformat='${db:Status-Status}\n' python3-pip; then
-  sudo apt-get update
+  sudo apt-get -qq -o=Dpkg::Use-Pty=0Q update
   sudo apt-get -qq -o=Dpkg::Use-Pty=0Q install --no-upgrade python3-pip
   # Required for Python3 formatting.
   pip install --quiet autopep8 reorder-python-imports pylint black ruff
@@ -94,6 +98,6 @@ fi
 
 # Install virtual env.
 if ! dpkg-query --show --showformat='${db:Status-Status}\n' python3.8-venv; then
-  sudo apt-get update
+  sudo apt-get -qq -o=Dpkg::Use-Pty=0Q update
   sudo apt-get -qq -o=Dpkg::Use-Pty=0Q install --no-upgrade python3.8-venv
 fi
