@@ -2,6 +2,8 @@
 set -o errexit
 set -o nounset
 set -o pipefail
+set -x
+
 if [[ "${TRACE-0}" == "1" ]]; then
     set -o xtrace
 fi
@@ -27,7 +29,7 @@ maybe_copy () {
 git config --global user.email "cyprien.de.masson@gmail.com"
 git config --global user.name "Cyprien de Masson"
 
-maybe_copy "${folder}/.inputrc" /.inputrc
+maybe_copy "${folder}/.inputrc" ~/.inputrc
 maybe_copy "${folder}/.vimrc" ~/.vimrc
 maybe_copy "${folder}/.bash_profile" ~/.bash_profile
 maybe_copy "${folder}/.bashrc" ~/.bashrc
@@ -61,7 +63,7 @@ fi
 mkdir -p ~/.vim/swap
 
 # Install vim-plug.
-if ! [ -d ~/.vim/autoload/plug.vim ]; then
+if [ ! -e ~/.vim/autoload/plug.vim ]; then
   curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
