@@ -170,10 +170,6 @@ if [[ $OSTYPE == 'darwin'* ]]; then
   PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
 fi
 
-# Remove duplicate in PATH
-# https://unix.stackexchange.com/questions/40749/remove-duplicate-path-entries-with-awk-command
-PATH="$(perl -e 'print join(":", grep { not $seen{$_}++ } split(/:/, $ENV{PATH}))')"
-
 # Less config for git and others.
 # -e to quit at eof
 # -F to output single screen files directly
