@@ -29,20 +29,23 @@ maybe_copy () {
 # To avoid running apt-get update every time.
 apt_updated=false
 
+# Returns true (0 in bash) if any package has been installed.
 function maybe_apt_install() {
-  package_name=$1
-  if ! dpkg-query --show --showformat='${db:Status-Status}\n' "${package_name}" &> /dev/null; then
-    echo "Installing ${package_name}"
-
-    if [ ! "${apt_updated}" = true ]; then
-      sudo apt-get -qq -o=Dpkg::Use-Pty=0Q update
-      apt_updated=true
+  local any_install=false
+  for package_name in "$@"; do
+    local status=$(dpkg-query --show --showformat='${db:Status-Status}\n' "${package_name}")
+    if [ ! "${status}" = "installed" ]; then
+      echo "Installing ${package_name}"
+      if [ ! "${apt_updated}" = true ]; then
+        sudo apt-get -qq -o=Dpkg::Use-Pty=0Q update
+        apt_updated=true
+      fi
+      sudo apt-get -qq -o=Dpkg::Use-Pty=0Q install --no-upgrade "${package_name}"
+      any_install=true
     fi
-    sudo apt-get -qq -o=Dpkg::Use-Pty=0Q install --no-upgrade "${package_name}"
-  else
-    # Nothing installed.
-    return 1
-  fi
+  done
+  if [ $any_install = true ]; then return 0; fi
+  return 1
 }
 
 # Note: also needs to upload ssh private key.
@@ -76,15 +79,11 @@ fi
 # Debian packages.
 
 # Needed for YCM
-maybe_apt_install "build-essential"
-maybe_apt_install "cmake"
-maybe_apt_install "vim-nox"
-maybe_apt_install "python3-dev"
+maybe_apt_install "build-essential" "cmake" "vim-nox" "python3-dev"
 
 # Generally useful.
-maybe_apt_install "fd-find"
-maybe_apt_install "awscli"
-maybe_apt_install "python3.8-venv"
+maybe_apt_install "fd-find" "awscli" "python3.8-venv"
+
 maybe_apt_install "python3-pip"
 if [ $? = 0 ]; then  # If we just installed pip, install packages
   pip install --quiet autopep8 reorder-python-imports pylint black ruff
