@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-set -o errexit
 set -o nounset
 set -o pipefail
+set -x
 
 if [[ "${TRACE-0}" == "1" ]]; then
     set -o xtrace
@@ -17,11 +17,14 @@ maybe_copy () {
     if ! cmp "$from" "$to" >/dev/null 2>&1; then
       echo "Files $from and $to differ, overwriting $to."
       cp -f "$from" "$to"
+      return 0
     fi
   else
     echo "File $to doesn't exist, copying from $from to $to."
     cp "$from" "$to"
+    return 0
   fi
+  return 1
 }
 
 # To avoid running apt-get update every time.
@@ -29,8 +32,8 @@ apt_updated=false
 
 function maybe_apt_install() {
   package_name=$1
-  if ! dpkg-query --show --showformat='${db:Status-Status}\n' python3.8-venv &> /dev/null; then
-    echo "Installing python3.8-venv"
+  if ! dpkg-query --show --showformat='${db:Status-Status}\n' "${package_name}" &> /dev/null; then
+    echo "Installing ${package_name}"
 
     if [ ! "${apt_updated}" = true ]; then
       sudo apt-get -qq -o=Dpkg::Use-Pty=0Q update
@@ -84,7 +87,7 @@ maybe_apt_install "fd-find"
 maybe_apt_install "awscli"
 maybe_apt_install "python3.8-venv"
 maybe_apt_install "python3-pip"
-if $?; then
+if [ $? = 0 ]; then  # If we just installed pip, install packages
   pip install --quiet autopep8 reorder-python-imports pylint black ruff
 fi
 
