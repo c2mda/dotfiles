@@ -47,7 +47,8 @@ function get_color()
     echo "${HN_COLORS[$((color_index%num_colors-1))]}"
   fi
 }
-PS1="$(get_color)\u@\h>>>${GREEN}\w ${NC}\n "
+color=$(get_color)
+PS1="${color}\u@\h>>>${GREEN}\w ${NC}\n "
 
 # Save and reload the history after each command finishes
 export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
@@ -168,10 +169,6 @@ if [[ $OSTYPE == 'darwin'* ]]; then
   # Add gnubin.
   PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
 fi
-
-# Remove duplicate in PATH
-# https://unix.stackexchange.com/questions/40749/remove-duplicate-path-entries-with-awk-command
-PATH="$(perl -e 'print join(":", grep { not $seen{$_}++ } split(/:/, $ENV{PATH}))')"
 
 # Less config for git and others.
 # -e to quit at eof
