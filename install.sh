@@ -34,7 +34,8 @@ apt_updated=false
 function maybe_apt_install() {
   local any_install=false
   for package_name in "$@"; do
-    local status=$(dpkg-query --show --showformat='${db:Status-Status}\n' "${package_name}")
+    local status
+    status=$(dpkg-query --show --showformat='${db:Status-Status}\n' "${package_name}")
     if [ ! "${status}" = "installed" ]; then
       echo "Installing ${package_name}"
       if [ ! "${apt_updated}" = true ]; then
@@ -83,10 +84,10 @@ fi
 maybe_apt_install build-essential cmake vim-nox python3-dev shellcheck
 
 # Generally useful.
-maybe_apt_install fd-find awscli python3.8-venv jq
+maybe_apt_install fd-find awscli python3.8-venv jq rclone
 
-maybe_apt_install "python3-pip"
-if [ $? = 0 ]; then  # If we just installed pip, install packages
+pip_installed=$(maybe_apt_install "python3-pip")
+if [ "$pip_installed" = true ]; then
   pip install --quiet autopep8 reorder-python-imports pylint black ruff
 fi
 
@@ -103,7 +104,7 @@ if [ ! -e ~/.vim/autoload/plug.vim ]; then
   # Some stuff needed for YouCompleteMe in vim.
   # A bit heavy but couldn't find a good lighter autocomplete.
   if ! ( ls ~/.vim/plugged/YouCompleteMe/third_party/ycmd/ycm_core.*.so &> /dev/null ) ; then
-    cd ~/.vim/plugged/YouCompleteMe
+    cd ~/.vim/plugged/YouCompleteMe || exit
     python3 install.py
   fi
 fi
