@@ -38,9 +38,6 @@ Plug 'google/vim-maktaba'
 " Codefmt: Google code formatter.
 Plug 'google/vim-codefmt'
 
-" Glaive: Google vim config manager.
-Plug 'google/vim-glaive'
-
 " Vim tmux navigator
 Plug 'christoomey/vim-tmux-navigator'
 
@@ -76,15 +73,10 @@ Plug 'ConradIrwin/vim-bracketed-paste'
 " Smooth scroll
 " Plug 'psliwka/vim-smoothie'
 
-" Git 
-Plug 'tpope/vim-fugitive'
-
-
 " Git tools
 Plug 'tpope/vim-fugitive'
 
 call plug#end()
-call glaive#Install()
 
 filetype plugin indent on
 
