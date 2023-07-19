@@ -84,7 +84,7 @@ fi
 maybe_apt_install build-essential cmake vim-nox python3-dev shellcheck
 
 # Generally useful.
-maybe_apt_install python3.9 fd-find awscli python3.9-venv jq rclone
+maybe_apt_install python3.9 fd-find awscli python3.9-venv jq rclone libffi-dev python3.9-dev docker.io
 
 pip_installed=$(maybe_apt_install "python3-pip")
 if [ "$pip_installed" = true ]; then
