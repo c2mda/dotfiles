@@ -235,6 +235,10 @@ let g:ale_sh_shfmt_options = '-i 2' " Indent shell script with 2 spaces.
 " Yamllint doesn't like spaces after curly brackets.
 let g:ale_javascript_prettier_options='--bracket-spacing=false'
 
+" Black takes care of line length, ruff is too strict.
+" E501 is line > 88 chars.
+let ale_python_ruff_options="--ignore E501"
+
 " Otherwise lnext errors when one or zero errors in list.
 function! Lnextwrap()
   try
