@@ -84,7 +84,7 @@ fi
 maybe_apt_install build-essential cmake vim-nox python3-dev shellcheck
 
 # Generally useful.
-maybe_apt_install python3.9 fd-find awscli python3.9-venv jq rclone libffi-dev python3.9-dev docker.io
+maybe_apt_install python3.9 fd-find awscli python3.9-venv jq rclone libffi-dev python3.9-dev docker.io gitsome
 
 pip_installed=$(maybe_apt_install "python3-pip")
 if [ "$pip_installed" = true ]; then
@@ -122,4 +122,15 @@ if ! command -v oci --version &> /dev/null; then
   echo "Installing Oracle CLI"
   # https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/cliinstall.htm
   bash <(curl -s https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh) --accept-all-defaults
+fi
+
+if ! command -v gh --version &> /dev/null; then
+  echo "Installing github CLI"
+  # https://github.com/cli/cli/blob/trunk/docs/install_linux.md
+  type -p curl >/dev/null || (sudo apt update && sudo apt install curl -y)
+  curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
+  && sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
+  && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+  && sudo apt update \
+  && sudo apt install gh -y
 fi
