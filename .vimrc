@@ -131,7 +131,7 @@ map <leader>fc :ALEFix<CR>
 
 map <leader>sc :write<CR>:ALELint<CR>
 
-" Map \fsc to format + lint 
+" Map \fsc to format + lint
 map <leader>fsc :write<CR>:ALEFix<CR>:write<CR>:ALELint<CR>
 
 " File types to autoformat on save
@@ -214,16 +214,16 @@ nnoremap <C-t> :History:<CR>
 packloadall
 " Yamlfix is good but indentation doesnt agree with yamllint
 " prettier + yamlfix seems to agree with yamllint
-      " \'yaml': ['trim_whitespace', 'yamlfix', 'prettier'], 
+      " \'yaml': ['trim_whitespace', 'yamlfix', 'prettier'],
 let g:ale_fixers = {
-      \'python': ['black', 'trim_whitespace', 'ruff', 'autopep8'],
-      \'yaml': ['trim_whitespace', 'prettier'], 
+      \'python': ['trim_whitespace', 'ruff', 'autopep8', 'flake8', 'isort', 'black'],
+      \'yaml': ['trim_whitespace', 'prettier'],
       \'cpp': ['clang-format'],
       \'markdown': ['pandoc'],
       \'sh': ['trim_whitespace', 'remove_trailing_lines', 'shfmt'],
       \}
 let g:ale_linters = {
-      \'python': ['ruff'], 
+      \'python': ['ruff', 'mypy'],
       \'yaml': ['yamllint'],
       \'cpp': ['clang'],
       \'markdown': ['pandoc'],
@@ -278,7 +278,8 @@ autocmd FileType python set tabstop=4
 autocmd FileType python set softtabstop=4
 
 " Search in buffers with FZF
-nnoremap <C-_> :Lines<CR>
+nnoremap <leader>vl :Lines<CR>
+nnoremap <leader>vb :Buffers<CR>
 
 " To use camel case motion,
 let g:camelcasemotion_key = ','
