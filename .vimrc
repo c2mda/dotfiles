@@ -76,6 +76,9 @@ Plug 'ConradIrwin/vim-bracketed-paste'
 " Git tools
 Plug 'tpope/vim-fugitive'
 
+" Jsonnet syntax hihglihgting
+Plug 'google/vim-jsonnet'
+
 call plug#end()
 
 filetype plugin indent on
