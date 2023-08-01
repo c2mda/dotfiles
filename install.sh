@@ -7,7 +7,7 @@ if [[ "${TRACE-0}" == "1" ]]; then
 fi
 
 # Assumes Ubuntu / apt.
-folder=$(dirname -- "$0";)
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 maybe_copy () {
   # Copy from -> to if differing or non existent.
@@ -16,12 +16,13 @@ maybe_copy () {
   if [ -e "$to" ] || [ -L "$to" ]; then
     if ! cmp "$from" "$to" >/dev/null 2>&1; then
       echo "Files $from and $to differ, overwriting $to."
-      cp -f "$from" "$to"
+      mv -f "$to" "${to}.bak"
+      ln -s "$from" "$to"
       return 0
     fi
   else
     echo "File $to doesn't exist, copying from $from to $to."
-    cp "$from" "$to"
+    ln -s "$from" "$to"
     return 0
   fi
   return 1
@@ -54,13 +55,13 @@ function maybe_apt_install() {
 git config --global user.email "cyprien.de.masson@gmail.com"
 git config --global user.name "Cyprien de Masson"
 
-maybe_copy "${folder}/.inputrc" ~/.inputrc
-maybe_copy "${folder}/.vimrc" ~/.vimrc
-maybe_copy "${folder}/.bash_profile" ~/.bash_profile
-maybe_copy "${folder}/.bashrc" ~/.bashrc
-maybe_copy "${folder}/.tmux.conf" ~/.tmux.conf
-maybe_copy "${folder}/.pylintrc" ~/.pylintrc
-maybe_copy "${folder}/rc" ~/.ssh/rc
+maybe_copy "${SCRIPT_DIR}/.inputrc" ~/.inputrc
+maybe_copy "${SCRIPT_DIR}/.vimrc" ~/.vimrc
+maybe_copy "${SCRIPT_DIR}/.bash_profile" ~/.bash_profile
+maybe_copy "${SCRIPT_DIR}/.bashrc" ~/.bashrc
+maybe_copy "${SCRIPT_DIR}/.tmux.conf" ~/.tmux.conf
+maybe_copy "${SCRIPT_DIR}/.pylintrc" ~/.pylintrc
+maybe_copy "${SCRIPT_DIR}/rc" ~/.ssh/rc
 
 # shellcheck source=/home/cyprien/.bash_profile
 source "${HOME}/.bash_profile"
@@ -84,11 +85,11 @@ fi
 maybe_apt_install build-essential cmake vim-nox python3-dev shellcheck
 
 # Generally useful.
-maybe_apt_install python3.9 fd-find awscli python3.9-venv jq rclone libffi-dev python3.9-dev docker.io gitsome
+maybe_apt_install python3.9 fd-find awscli python3.9-venv jq rclone libffi-dev python3.9-dev docker.io
 
 pip_installed=$(maybe_apt_install "python3-pip")
 if [ "$pip_installed" = true ]; then
-  pip install --quiet autopep8 reorder-python-imports pylint black ruff poetry
+  pip install --quiet autopep8 reorder-python-imports pylint black ruff poetry mypy flake8 isort
 fi
 
 # Vim
@@ -133,4 +134,11 @@ if ! command -v gh --version &> /dev/null; then
   && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
   && sudo apt update \
   && sudo apt install gh -y
+fi
+
+# Tanka
+if ! command -v tk --version &> /dev/null; then
+  echo "Installing tanka"
+  sudo curl -Lo /usr/local/bin/tk https://github.com/grafana/tanka/releases/latest/download/tk-linux-amd64
+  sudo chmod a+x /usr/local/bin/tk
 fi
