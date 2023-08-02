@@ -219,7 +219,7 @@ packloadall
 " prettier + yamlfix seems to agree with yamllint
       " \'yaml': ['trim_whitespace', 'yamlfix', 'prettier'],
 let g:ale_fixers = {
-      \'python': ['trim_whitespace', 'ruff', 'autopep8', 'flake8', 'isort', 'black'],
+      \'python': ['trim_whitespace', 'ruff', 'autopep8', 'autoflake', 'isort', 'black'],
       \'yaml': ['trim_whitespace', 'prettier'],
       \'cpp': ['clang-format'],
       \'markdown': ['pandoc'],
