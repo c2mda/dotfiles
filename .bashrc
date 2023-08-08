@@ -177,3 +177,26 @@ fi
 # -Q to avoid using terminal bell
 # -X to avoid clearing screen
 export LESS="$LESS -eQFRX"
+
+# https://github.com/junegunn/fzf/blob/master/ADVANCED.md#using-fzf-as-interactive-ripgrep-launcher
+# Require bat for preview and ripgrep.
+# 1. Search for text in files using Ripgrep
+# 2. Interactively restart Ripgrep with reload action
+# 3. Open the file in Vim
+rgfzf() {
+  RG_PREFIX="rg --column --line-number --no-heading --color=always --smart-case "
+  INITIAL_QUERY="${*:-}"
+  # echo "test"
+  : | fzf --ansi --disabled --query "$INITIAL_QUERY" \
+      --bind "start:reload:$RG_PREFIX {q}" \
+      --bind "change:reload:sleep 0.1; $RG_PREFIX {q} || true" \
+      --bind "alt-enter:unbind(change,alt-enter)+change-prompt(2. fzf> )+enable-search+clear-query" \
+      --color "hl:-1:underline,hl+:-1:underline:reverse" \
+      --prompt '1. ripgrep> ' \
+      --delimiter : \
+      --preview 'bat --color=always {1} --highlight-line {2}' \
+      --preview-window 'up,60%,border-bottom,+{2}+3/3,~3' \
+      --bind 'enter:become(vim {1} +{2})'
+}
+# https://stackoverflow.com/questions/10980575/how-can-i-unbind-and-remap-c-w-in-bash
+bind -x '"\C-w":"rgfzf"'

@@ -20,3 +20,6 @@ set completion-ignore-case on
 
 # No bell on unnecessary backspace.
 set bell-style "none"
+
+# https://stackoverflow.com/questions/10980575/how-can-i-unbind-and-remap-c-w-in-bash
+stty werase undef

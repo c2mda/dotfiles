@@ -96,6 +96,15 @@ if [ "$pip_installed" = true ]; then
   pip install --quiet autopep8 reorder-python-imports pylint black ruff poetry mypy flake8 isort
 fi
 
+if ! command -v bat --version &> /dev/null; then
+  echo "Installing bat"
+  maybe_apt_install bat
+
+  # Bat is installed as batcat due to name clash.
+  mkdir -p ~/.local/bin
+  ln -s /usr/bin/batcat ~/.local/bin/bat
+fi
+
 # Vim
 mkdir -p ~/.vim/swap
 if [ ! -e ~/.vim/autoload/plug.vim ]; then
