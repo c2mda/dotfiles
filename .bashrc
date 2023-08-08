@@ -80,7 +80,9 @@ export FZF_ALT_C_COMMAND="${FDFIND} --type d --hidden --exclude .git --exclude /
 fzf-vi-widget() {
   local selected
   selected="$(__fzf_select__)"
-  READLINE_LINE="vi $selected"
+  if [ -n "$selected" ]; then
+    READLINE_LINE="vi $selected"
+  fi
 }
 bind -m vi-command -x '"\C-e": fzf-vi-widget'
 bind -m vi-insert -x '"\C-e": fzf-vi-widget'
