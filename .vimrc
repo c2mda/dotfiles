@@ -285,7 +285,7 @@ nnoremap <leader>vl :Lines<CR>
 nnoremap <leader>vb :Buffers<CR>
 
 " Search everywhere with ripgrep+FZF
-nnoremap <C-w> :RG<CR>
+nnoremap <C-w> :Rg<CR>
 
 " To use camel case motion,
 let g:camelcasemotion_key = ','
