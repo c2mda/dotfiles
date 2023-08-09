@@ -22,4 +22,4 @@ set completion-ignore-case on
 set bell-style "none"
 
 # https://stackoverflow.com/questions/10980575/how-can-i-unbind-and-remap-c-w-in-bash
-stty werase undef
+set bind-tty-special-chars Off
