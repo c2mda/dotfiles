@@ -201,4 +201,6 @@ rgfzf() {
       --bind 'enter:become(vim {1} +{2})'
 }
 # https://stackoverflow.com/questions/10980575/how-can-i-unbind-and-remap-c-w-in-bash
-bind -x '"\C-w":"rgfzf"'
+# Need to bind both mode explicitly for it to work in both.
+bind -m vi-insert -x '"\C-w":"rgfzf"'
+bind -m vi-command -x '"\C-w":"rgfzf"'
