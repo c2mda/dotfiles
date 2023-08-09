@@ -234,6 +234,8 @@ let g:ale_linters = {
       \}
 let g:ale_cpp_clang_options = '-Wall -O2 -std=c++1z'
 let g:ale_sh_shfmt_options = '-i 2' " Indent shell script with 2 spaces.
+let g:ale_fix_on_save = 1
+
 
 " Yamllint doesn't like spaces after curly brackets.
 let g:ale_javascript_prettier_options='--bracket-spacing=false'
