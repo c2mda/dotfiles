@@ -170,6 +170,11 @@ if [[ $OSTYPE == 'darwin'* ]]; then
 
   # Add gnubin.
   PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
+
+  # LSCOLORS has different syntax on OS X apparently.
+  # https://apple.stackexchange.com/questions/282185/how-do-i-get-different-colors-for-directories-etc-in-iterm2
+  LSCOLORS="EHfxcxdxBxegecabagacad"
+  export LSCOLORS
 fi
 
 # Less config for git and others.
