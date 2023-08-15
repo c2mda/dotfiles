@@ -45,6 +45,9 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 
+" Peekaboo to view register contents before pasting.
+Plug 'junegunn/vim-peekaboo'
+
 " Autocomplete.
 " Also needs:
 " sudo apt install build-essential cmake vim-nox python3-dev
