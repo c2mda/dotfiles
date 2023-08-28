@@ -152,10 +152,6 @@ set laststatus=2
 " Show insert / normal
 set showmode
 
-" No Ex mode
-nnoremap Q <nop>
-
-nnoremap <C-e> :FZF<CR>
 
 " absolute width of netrw window
 let g:netrw_winsize = -28
@@ -214,7 +210,6 @@ set spellcapcheck=
 "
 set omnifunc=syntaxcomplete#Complete
 
-nnoremap <C-t> :History:<CR>
 
 " Load installed plugins.
 packloadall
@@ -285,13 +280,6 @@ autocmd FileType python set shiftwidth=4
 autocmd FileType python set tabstop=4
 autocmd FileType python set softtabstop=4
 
-" Search in buffers with FZF
-nnoremap <leader>vl :Lines<CR>
-nnoremap <leader>vb :Buffers<CR>
-
-" Search everywhere with ripgrep+FZF
-nnoremap <C-w> :Rg<CR>
-
 " To use camel case motion,
 let g:camelcasemotion_key = ','
 
@@ -335,10 +323,6 @@ let g:ycm_global_ycm_extra_conf = '~/global_extra_conf.py'
 
 " YCM commands to get documentation and go to definition
 " https://github.com/ycm-core/YouCompleteMe
-nnoremap <leader>jd :YcmCompleter GoTo<CR>
-nnoremap <leader>jr :YcmCompleter GoToReferences<CR>
-nnoremap <leader>jv :YcmCompleter GetDoc<CR>
-
 " Display tabs as \t.
 set list
 set listchars=tab:\\t
@@ -352,3 +336,27 @@ augroup CommandLineWindow
     autocmd!
     autocmd CmdwinEnter * nnoremap <buffer> ZZ :q<cr>
 augroup END
+
+""""""" SHORTCUTS
+
+" No Ex mode
+nnoremap Q <nop>
+
+nnoremap <C-e> :FZF<CR>
+nnoremap <C-t> :History:<CR>
+
+" Search in buffers with FZF
+nnoremap <C-q> :Lines<CR>
+nnoremap <leader>vb :Buffers<CR>
+
+" Search everywhere with ripgrep+FZF
+nnoremap <C-w> :Rg<CR>
+
+nnoremap <leader>jd :YcmCompleter GoTo<CR>
+nnoremap <leader>jr :YcmCompleter GoToReferences<CR>
+nnoremap <leader>jv :YcmCompleter GetDoc<CR>
+
+" XX to write and close buffer
+nnoremap XX :w<CR>:q<CR>
+" XQ to close buffer without saving
+nnoremap XQ :q!<CR>
