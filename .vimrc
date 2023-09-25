@@ -62,7 +62,7 @@ Plug 'gioele/vim-autoswap'
 Plug 'ojroques/vim-oscyank'
 
 " Indent visible in yaml files.
-Plug 'Yggdroot/indentLine'
+" Plug 'Yggdroot/indentLine'
 
 " Correct folds in yaml.
 Plug 'pedrohdz/vim-yaml-folds'
@@ -301,7 +301,7 @@ autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | exe
 autocmd FileType yaml setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
 
 " For indentLine plugin
-let g:indentLine_char = '⦙'
+" let g:indentLine_char = '⦙'
 
 " Yaml does not require indentation whne using hyphen.
 let g:ale_yaml_yamllint_options='-d "{extends: default, rules: {indentation: {indent-sequences: consistent}}}"'
