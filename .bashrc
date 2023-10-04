@@ -212,4 +212,4 @@ bind -m vi-command -x '"\C-w":"rgfzf"'
 
 export PATH=/home/cyprien/bin:$PATH
 
-[[ -e "/home/cyprien/lib/oracle-cli/lib/python3.8/site-packages/oci_cli/bin/oci_autocomplete.sh" ]] && source "/home/cyprien/lib/oracle-cli/lib/python3.8/site-packages/oci_cli/bin/oci_autocomplete.sh"
+# [[ -e "/home/cyprien/lib/oracle-cli/lib/python3.8/site-packages/oci_cli/bin/oci_autocomplete.sh" ]] && source "/home/cyprien/lib/oracle-cli/lib/python3.8/site-packages/oci_cli/bin/oci_autocomplete.sh"
