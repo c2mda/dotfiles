@@ -209,3 +209,7 @@ rgfzf() {
 # Need to bind both mode explicitly for it to work in both.
 bind -m vi-insert -x '"\C-w":"rgfzf"'
 bind -m vi-command -x '"\C-w":"rgfzf"'
+
+export PATH=/home/cyprien/bin:$PATH
+
+[[ -e "/home/cyprien/lib/oracle-cli/lib/python3.8/site-packages/oci_cli/bin/oci_autocomplete.sh" ]] && source "/home/cyprien/lib/oracle-cli/lib/python3.8/site-packages/oci_cli/bin/oci_autocomplete.sh"
