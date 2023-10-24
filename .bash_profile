@@ -4,9 +4,6 @@ alias cls='printf "\033c" && [ -n "$TMUX" ] && tmux clear-history'
 # XClip
 alias xclip='xclip -selection c'
 
-# Python3
-alias python=python3.10
-
 #€ On debian fd is renamed fdfind
 if [ -f /usr/bin/fdfind ] && ! [ -f /opt/homebrew/bin/fd ]; then
   FDFIND='/usr/bin/fdfind -I'
