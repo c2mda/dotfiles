@@ -87,7 +87,7 @@ maybe_apt_install build-essential cmake vim-nox python3-dev shellcheck
 # Generally useful.
 if ! apt-cache policy | grep deadsnakes &>/dev/null; then
   echo "Adding deadsnakes/ppa to repositories."
-  sudo add-apt-repository ppa:deadsnakes/ppa
+  sudo add-apt-repository --yes ppa:deadsnakes/ppa
 fi
 maybe_apt_install python3.10 fd-find awscli python3.10-venv jq rclone libffi-dev python3.10-dev docker.io ripgrep
 
