@@ -210,8 +210,6 @@ rgfzf() {
 bind -m vi-insert -x '"\C-w":"rgfzf"'
 bind -m vi-command -x '"\C-w":"rgfzf"'
 
-export PIP_CACHE_DIR=/app/cyprien2/.cache/pip
-
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('/app/cyprien2/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
@@ -226,8 +224,3 @@ else
 fi
 unset __conda_setup
 # <<< conda initialize <<<
-
-
-export PATH=/home/cyprien2/bin:$PATH
-
-[[ -e "/home/cyprien2/lib/oracle-cli/lib/python3.8/site-packages/oci_cli/bin/oci_autocomplete.sh" ]] && source "/home/cyprien2/lib/oracle-cli/lib/python3.8/site-packages/oci_cli/bin/oci_autocomplete.sh"
