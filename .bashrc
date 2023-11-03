@@ -209,3 +209,25 @@ rgfzf() {
 # Need to bind both mode explicitly for it to work in both.
 bind -m vi-insert -x '"\C-w":"rgfzf"'
 bind -m vi-command -x '"\C-w":"rgfzf"'
+
+export PIP_CACHE_DIR=/app/cyprien2/.cache/pip
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/app/cyprien2/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/app/cyprien2/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/app/cyprien2/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/app/cyprien2/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
+
+export PATH=/home/cyprien2/bin:$PATH
+
+[[ -e "/home/cyprien2/lib/oracle-cli/lib/python3.8/site-packages/oci_cli/bin/oci_autocomplete.sh" ]] && source "/home/cyprien2/lib/oracle-cli/lib/python3.8/site-packages/oci_cli/bin/oci_autocomplete.sh"
