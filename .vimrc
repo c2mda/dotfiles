@@ -45,6 +45,9 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 
+" Peekaboo to view register contents before pasting.
+Plug 'junegunn/vim-peekaboo'
+
 " Autocomplete.
 " Also needs:
 " sudo apt install build-essential cmake vim-nox python3-dev
@@ -59,7 +62,7 @@ Plug 'gioele/vim-autoswap'
 Plug 'ojroques/vim-oscyank'
 
 " Indent visible in yaml files.
-Plug 'Yggdroot/indentLine'
+" Plug 'Yggdroot/indentLine'
 
 " Correct folds in yaml.
 Plug 'pedrohdz/vim-yaml-folds'
@@ -75,6 +78,9 @@ Plug 'ConradIrwin/vim-bracketed-paste'
 
 " Git tools
 Plug 'tpope/vim-fugitive'
+
+" Jsonnet syntax hihglihgting
+Plug 'google/vim-jsonnet'
 
 call plug#end()
 
@@ -131,7 +137,7 @@ map <leader>fc :ALEFix<CR>
 
 map <leader>sc :write<CR>:ALELint<CR>
 
-" Map \fsc to format + lint 
+" Map \fsc to format + lint
 map <leader>fsc :write<CR>:ALEFix<CR>:write<CR>:ALELint<CR>
 
 " File types to autoformat on save
@@ -146,10 +152,6 @@ set laststatus=2
 " Show insert / normal
 set showmode
 
-" No Ex mode
-nnoremap Q <nop>
-
-nnoremap <C-e> :FZF<CR>
 
 " absolute width of netrw window
 let g:netrw_winsize = -28
@@ -208,22 +210,21 @@ set spellcapcheck=
 "
 set omnifunc=syntaxcomplete#Complete
 
-nnoremap <C-t> :History:<CR>
 
 " Load installed plugins.
 packloadall
 " Yamlfix is good but indentation doesnt agree with yamllint
 " prettier + yamlfix seems to agree with yamllint
-      " \'yaml': ['trim_whitespace', 'yamlfix', 'prettier'], 
+      " \'yaml': ['trim_whitespace', 'yamlfix', 'prettier'],
 let g:ale_fixers = {
-      \'python': ['black', 'trim_whitespace', 'ruff', 'autopep8'],
-      \'yaml': ['trim_whitespace', 'prettier'], 
+      \'python': ['trim_whitespace', 'ruff', 'autopep8', 'autoflake', 'isort', 'black'],
+      \'yaml': ['trim_whitespace', 'prettier'],
       \'cpp': ['clang-format'],
       \'markdown': ['pandoc'],
       \'sh': ['trim_whitespace', 'remove_trailing_lines', 'shfmt'],
       \}
 let g:ale_linters = {
-      \'python': ['ruff'], 
+      \'python': ['ruff', 'mypy'],
       \'yaml': ['yamllint'],
       \'cpp': ['clang'],
       \'markdown': ['pandoc'],
@@ -231,6 +232,8 @@ let g:ale_linters = {
       \}
 let g:ale_cpp_clang_options = '-Wall -O2 -std=c++1z'
 let g:ale_sh_shfmt_options = '-i 2' " Indent shell script with 2 spaces.
+let g:ale_fix_on_save = 0  " This removes 'useless' imports in __init__.py
+
 
 " Yamllint doesn't like spaces after curly brackets.
 let g:ale_javascript_prettier_options='--bracket-spacing=false'
@@ -277,9 +280,6 @@ autocmd FileType python set shiftwidth=4
 autocmd FileType python set tabstop=4
 autocmd FileType python set softtabstop=4
 
-" Search in buffers with FZF
-nnoremap <C-_> :Lines<CR>
-
 " To use camel case motion,
 let g:camelcasemotion_key = ','
 
@@ -301,7 +301,7 @@ autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | exe
 autocmd FileType yaml setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
 
 " For indentLine plugin
-let g:indentLine_char = '⦙'
+" let g:indentLine_char = '⦙'
 
 " Yaml does not require indentation whne using hyphen.
 let g:ale_yaml_yamllint_options='-d "{extends: default, rules: {indentation: {indent-sequences: consistent}}}"'
@@ -323,10 +323,6 @@ let g:ycm_global_ycm_extra_conf = '~/global_extra_conf.py'
 
 " YCM commands to get documentation and go to definition
 " https://github.com/ycm-core/YouCompleteMe
-nnoremap <leader>jd :YcmCompleter GoTo<CR>
-nnoremap <leader>jr :YcmCompleter GoToReferences<CR>
-nnoremap <leader>jv :YcmCompleter GetDoc<CR>
-
 " Display tabs as \t.
 set list
 set listchars=tab:\\t
@@ -340,3 +336,27 @@ augroup CommandLineWindow
     autocmd!
     autocmd CmdwinEnter * nnoremap <buffer> ZZ :q<cr>
 augroup END
+
+""""""" SHORTCUTS
+
+" No Ex mode
+nnoremap Q <nop>
+
+nnoremap <C-e> :FZF<CR>
+nnoremap <C-t> :History:<CR>
+
+" Search in buffers with FZF
+nnoremap <C-q> :Lines<CR>
+nnoremap <leader>vb :Buffers<CR>
+
+" Search everywhere with ripgrep+FZF
+nnoremap <C-w> :Rg<CR>
+
+nnoremap <leader>jd :YcmCompleter GoTo<CR>
+nnoremap <leader>jr :YcmCompleter GoToReferences<CR>
+nnoremap <leader>jv :YcmCompleter GetDoc<CR>
+
+" XX to write and close buffer
+nnoremap XX :w<CR>:q<CR>
+" XQ to close buffer without saving
+nnoremap XQ :q!<CR>

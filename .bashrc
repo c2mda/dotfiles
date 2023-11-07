@@ -80,7 +80,9 @@ export FZF_ALT_C_COMMAND="${FDFIND} --type d --hidden --exclude .git --exclude /
 fzf-vi-widget() {
   local selected
   selected="$(__fzf_select__)"
-  READLINE_LINE="vi $selected"
+  if [ -n "$selected" ]; then
+    READLINE_LINE="vi $selected"
+  fi
 }
 bind -m vi-command -x '"\C-e": fzf-vi-widget'
 bind -m vi-insert -x '"\C-e": fzf-vi-widget'
@@ -168,6 +170,11 @@ if [[ $OSTYPE == 'darwin'* ]]; then
 
   # Add gnubin.
   PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
+
+  # LSCOLORS has different syntax on OS X apparently.
+  # https://apple.stackexchange.com/questions/282185/how-do-i-get-different-colors-for-directories-etc-in-iterm2
+  LSCOLORS="EHfxcxdxBxegecabagacad"
+  export LSCOLORS
 fi
 
 # Less config for git and others.
@@ -177,3 +184,43 @@ fi
 # -Q to avoid using terminal bell
 # -X to avoid clearing screen
 export LESS="$LESS -eQFRX"
+
+# https://github.com/junegunn/fzf/blob/master/ADVANCED.md#using-fzf-as-interactive-ripgrep-launcher
+# Require bat for preview and ripgrep.
+# 1. Search for text in files using Ripgrep
+# 2. Interactively restart Ripgrep with reload action
+# 3. Open the file in Vim
+rgfzf() {
+  RG_PREFIX="rg --column --line-number --no-heading --color=always --smart-case "
+  INITIAL_QUERY="${*:-}"
+  # echo "test"
+  : | fzf --ansi --disabled --query "$INITIAL_QUERY" \
+      --bind "start:reload:$RG_PREFIX {q}" \
+      --bind "change:reload:sleep 0.1; $RG_PREFIX {q} || true" \
+      --bind "alt-enter:unbind(change,alt-enter)+change-prompt(2. fzf> )+enable-search+clear-query" \
+      --color "hl:-1:underline,hl+:-1:underline:reverse" \
+      --prompt '1. ripgrep> ' \
+      --delimiter : \
+      --preview 'bat --color=always {1} --highlight-line {2}' \
+      --preview-window 'up,60%,border-bottom,+{2}+3/3,~3' \
+      --bind 'enter:become(vim {1} +{2})'
+}
+# https://stackoverflow.com/questions/10980575/how-can-i-unbind-and-remap-c-w-in-bash
+# Need to bind both mode explicitly for it to work in both.
+bind -m vi-insert -x '"\C-w":"rgfzf"'
+bind -m vi-command -x '"\C-w":"rgfzf"'
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/app/cyprien2/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/app/cyprien2/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/app/cyprien2/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/app/cyprien2/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
