@@ -4,12 +4,11 @@ alias cls='printf "\033c" && [ -n "$TMUX" ] && tmux clear-history'
 # XClip
 alias xclip='xclip -selection c'
 
-# Python3
-alias python=python3.9
-
-#€ On debian fd is renamed fdfind
-if [ -f /usr/bin/fdfind ] && ! [ -f /opt/homebrew/bin/fd ]; then
-  FDFIND='/usr/bin/fdfind -I'
+# On debian fd is renamed fdfind
+# Don't specify path to fdfind, so that we can use the ~/.local/bin
+# version when on a remote machine that has only ~ mounted.
+if [[ $OSTYPE == 'linux-gnu' ]]; then
+  FDFIND='fdfind -I'
 else
 # Fd does not respect .gitignore
   FDFIND='fd -I'
@@ -39,3 +38,4 @@ if [ -f ~/.git-completion.bash ]; then
 fi
 
 source ~/.bashrc
+. "$HOME/.cargo/env"
