@@ -36,4 +36,3 @@ if [ -f ~/.git-completion.bash ]; then
 fi
 
 source ~/.bashrc
-. "$HOME/.cargo/env"
