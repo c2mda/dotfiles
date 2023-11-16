@@ -5,8 +5,8 @@ alias cls='printf "\033c" && [ -n "$TMUX" ] && tmux clear-history'
 alias xclip='xclip -selection c'
 
 #€ On debian fd is renamed fdfind
-if [ -f /usr/bin/fdfind ] && ! [ -f /opt/homebrew/bin/fd ]; then
-  FDFIND='/usr/bin/fdfind -I'
+if [[ $OSTYPE != 'darwin'* ]]; then
+  FDFIND='fdfind -I'
 else
 # Fd does not respect .gitignore
   FDFIND='fd -I'
@@ -36,3 +36,4 @@ if [ -f ~/.git-completion.bash ]; then
 fi
 
 source ~/.bashrc
+. "$HOME/.cargo/env"
