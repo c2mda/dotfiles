@@ -4,12 +4,13 @@ alias cls='printf "\033c" && [ -n "$TMUX" ] && tmux clear-history'
 # XClip
 alias xclip='xclip -selection c'
 
-#€ On debian fd is renamed fdfind
-if [[ $OSTYPE != 'darwin'* ]]; then
-  FDFIND='fdfind -I'
+# On debian fd is renamed fdfind
+# Don't specify path to fdfind, so that we can use the ~/.local/bin
+# version when on a remote machine that has only ~ mounted.
+if [[ $OSTYPE == 'linux-gnu' ]]; then
+  FDFIND='fdfind'
 else
-# Fd does not respect .gitignore
-  FDFIND='fd -I'
+  FDFIND='fd'
 fi
 alias fd="$FDFIND"
 
