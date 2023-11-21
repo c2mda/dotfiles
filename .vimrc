@@ -79,7 +79,7 @@ Plug 'ConradIrwin/vim-bracketed-paste'
 " Git tools
 Plug 'tpope/vim-fugitive'
 
-" Jsonnet syntax hihglihgting
+" Jsonnet syntax highlighting
 Plug 'google/vim-jsonnet'
 
 call plug#end()
