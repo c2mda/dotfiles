@@ -64,12 +64,6 @@ export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 [ -f /usr/share/doc/fzf/examples/completion.bash ] && source /usr/share/doc/fzf/examples/completion.bash
 
 # Set FZF default search to be exact
-if [ -f /usr/bin/fdfind ] && ! [ -f /opt/homebrew/bin/fd ]; then
-  FDFIND='/usr/bin/fdfind -I'
-else
-# Fd does not respect .gitignore
-  FDFIND='fd -I'
-fi
 export FZF_DEFAULT_OPTS='--exact --bind "ctrl-a:select-all,ctrl-d:deselect-all,ctrl-t:toggle-all"'
 export FZF_DEFAULT_COMMAND="${FDFIND} --type f --hidden --follow --exclude .git --exclude /Library --exclude \"Google Drive/.My Drive\""
 export FZF_CTRL_T_COMMAND="${FDFIND} --type f --hidden --follow --exclude .git --exclude /Library --exclude \"Google Drive/.My Drive\""
