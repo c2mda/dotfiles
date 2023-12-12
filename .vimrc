@@ -172,7 +172,8 @@ set mouse=a
 colorscheme desert
 " desert looks different on OSX and Linux, make Normal consistent.
 highlight Normal ctermfg=LightGray ctermbg=Black
-
+" default diffchange color is flashy magenta
+highlight DiffChange ctermbg=LightCyan
 
 " white on black menu for autocompletion -- must be after colorscheme
 highlight Pmenu ctermfg=15 ctermbg=0 guifg=#ffffff guibg=#000000
@@ -360,3 +361,4 @@ nnoremap <leader>jv :YcmCompleter GetDoc<CR>
 nnoremap XX :w<CR>:q<CR>
 " XQ to close buffer without saving
 nnoremap XQ :q!<CR>
+
