@@ -6,8 +6,10 @@ set encoding=utf-8
 
 " Nice status line
 set statusline=%F       "tail of the filename
-set statusline+=%y      "filetype
+" set statusline+=%y      "filetype
 set statusline+=%m      "modified flag
+" Current class:function using tagbar plugin. See :help tagbar.
+set statusline+=:%{tagbar#currenttag(\"%s\",\"\",\"f\",\"scoped-stl\")}
 
 " Swap files: all in same directory
 set directory=$HOME/.vim/swap/
@@ -81,6 +83,9 @@ Plug 'tpope/vim-fugitive'
 
 " Jsonnet syntax highlighting
 Plug 'google/vim-jsonnet'
+
+" Tagbar
+Plug 'preservim/tagbar'
 
 call plug#end()
 
@@ -338,6 +343,9 @@ augroup CommandLineWindow
     autocmd CmdwinEnter * nnoremap <buffer> ZZ :q<cr>
 augroup END
 
+" Compact tagbar
+let g:tagbar_compact = 1
+
 """"""" SHORTCUTS
 
 " No Ex mode
@@ -356,6 +364,7 @@ nnoremap <C-w> :Rg<CR>
 nnoremap <leader>jd :YcmCompleter GoTo<CR>
 nnoremap <leader>jr :YcmCompleter GoToReferences<CR>
 nnoremap <leader>jv :YcmCompleter GetDoc<CR>
+nnoremap <leader>jo :TagbarToggle<CR>
 
 " XX to write and close buffer
 nnoremap XX :w<CR>:q<CR>
