@@ -166,7 +166,7 @@ if ! command -v gh --version &> /dev/null; then
   && sudo apt update \
   && sudo apt install gh -y
   # Make available on other machines sharing $HOME
-  cp /usr/bin/rg $HOME/bin/
+  cp /usr/bin/gh $HOME/bin/
 fi
 
 # Tanka
