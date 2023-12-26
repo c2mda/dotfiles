@@ -30,6 +30,19 @@ BLUE='\033[0;34m'
 MAGENTA='\033[0;35m'
 NC='\033[0m' # No color.
 
+function is_macbook()
+{
+  # Compare only letters.
+  local compare="${HOSTNAME//[^[:alpha:]]/}"
+  # Compare in lowercase.
+  local compare=${compare,,}
+  # Check if local machine.
+  if [[ "${compare}" = *"xmbppersom"* ]]; then
+    return 0
+  fi 
+  return 1
+}
+
 function get_color()
 {
   local HN_COLORS=("$RED" "$GREEN" "$YELLOW" "$BLUE" "$MAGENTA")
@@ -209,6 +222,11 @@ rgfzf() {
 # Need to bind both mode explicitly for it to work in both.
 bind -m vi-insert -x '"\C-w":"rgfzf"'
 bind -m vi-command -x '"\C-w":"rgfzf"'
+
+# Always add primary key to ssh agent on local machine.
+if is_macbook; then
+  ssh-add ~/.ssh/id_ed25519 &>/dev/null
+fi
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
