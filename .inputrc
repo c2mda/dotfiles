@@ -23,3 +23,9 @@ set bell-style "none"
 
 # https://stackoverflow.com/questions/10980575/how-can-i-unbind-and-remap-c-w-in-bash
 set bind-tty-special-chars Off
+
+# iterm2 sets left option to Meta (and right option to normal behaviour).  So
+# left option is digit-argument 3 which allows repeating command 3 times.  We
+# don't use this, and on OSX left option+3 is the hash key which is more
+# useful.
+"\e3": "#"
