@@ -6,8 +6,10 @@ set encoding=utf-8
 
 " Nice status line
 set statusline=%F       "tail of the filename
-set statusline+=%y      "filetype
+" set statusline+=%y      "filetype
 set statusline+=%m      "modified flag
+" Current class:function using tagbar plugin. See :help tagbar.
+set statusline+=:%{tagbar#currenttag(\"%s\",\"\",\"f\",\"scoped-stl\")}
 
 " Swap files: all in same directory
 set directory=$HOME/.vim/swap/
@@ -79,8 +81,11 @@ Plug 'ConradIrwin/vim-bracketed-paste'
 " Git tools
 Plug 'tpope/vim-fugitive'
 
-" Jsonnet syntax hihglihgting
+" Jsonnet syntax highlighting
 Plug 'google/vim-jsonnet'
+
+" Tagbar
+Plug 'preservim/tagbar'
 
 call plug#end()
 
@@ -172,7 +177,8 @@ set mouse=a
 colorscheme desert
 " desert looks different on OSX and Linux, make Normal consistent.
 highlight Normal ctermfg=LightGray ctermbg=Black
-
+" default diffchange color is flashy magenta
+highlight DiffChange ctermbg=LightYellow
 
 " white on black menu for autocompletion -- must be after colorscheme
 highlight Pmenu ctermfg=15 ctermbg=0 guifg=#ffffff guibg=#000000
@@ -337,6 +343,9 @@ augroup CommandLineWindow
     autocmd CmdwinEnter * nnoremap <buffer> ZZ :q<cr>
 augroup END
 
+" Compact tagbar
+let g:tagbar_compact = 1
+
 """"""" SHORTCUTS
 
 " No Ex mode
@@ -355,8 +364,10 @@ nnoremap <C-w> :Rg<CR>
 nnoremap <leader>jd :YcmCompleter GoTo<CR>
 nnoremap <leader>jr :YcmCompleter GoToReferences<CR>
 nnoremap <leader>jv :YcmCompleter GetDoc<CR>
+nnoremap <leader>jo :TagbarToggle<CR>
 
 " XX to write and close buffer
 nnoremap XX :w<CR>:q<CR>
 " XQ to close buffer without saving
 nnoremap XQ :q!<CR>
+

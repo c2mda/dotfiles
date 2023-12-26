@@ -89,7 +89,25 @@ if ! apt-cache policy | grep deadsnakes &>/dev/null; then
   echo "Adding deadsnakes/ppa to repositories."
   sudo add-apt-repository --yes ppa:deadsnakes/ppa
 fi
-maybe_apt_install python3.10 fd-find awscli python3.10-venv jq rclone libffi-dev python3.10-dev docker.io ripgrep
+maybe_apt_install python3.10 awscli python3.10-venv jq rclone libffi-dev python3.10-dev docker.io
+
+# Make available on other machines sharing $HOME
+fd_installed=$(maybe_apt_install "fd-find")
+if [ "$fd_installed" = true ]; then
+  cp /usr/bin/fdfind $HOME/bin/
+fi
+
+# Make available on other machines sharing $HOME
+rclone_installed=$(maybe_apt_install "rclone")
+if [ "$rclone_installed" = true ]; then
+  cp /bin/rclone $HOME/bin/
+fi
+ 
+# Make available on other machines sharing $HOME
+rg_installed=$(maybe_apt_install "ripgrep")
+if [ "$rg_installed" = true ]; then
+  cp /usr/bin/rg $HOME/bin/
+fi
 
 pip_installed=$(maybe_apt_install "python3-pip")
 if [ "$pip_installed" = true ]; then
@@ -147,6 +165,8 @@ if ! command -v gh --version &> /dev/null; then
   && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
   && sudo apt update \
   && sudo apt install gh -y
+  # Make available on other machines sharing $HOME
+  cp /usr/bin/gh $HOME/bin/
 fi
 
 # Tanka
