@@ -4,13 +4,6 @@ set nocompatible
 " Required for eg YouCompleteME
 set encoding=utf-8
 
-" Nice status line
-set statusline=%F       "tail of the filename
-" set statusline+=%y      "filetype
-set statusline+=%m      "modified flag
-" Current class:function using tagbar plugin. See :help tagbar.
-set statusline+=:%{tagbar#currenttag(\"%s\",\"\",\"f\",\"scoped-stl\")}
-
 " Swap files: all in same directory
 set directory=$HOME/.vim/swap/
 
@@ -87,6 +80,9 @@ Plug 'google/vim-jsonnet'
 " Tagbar
 Plug 'preservim/tagbar'
 
+" Show git status of lines in gutter.
+Plug 'mhinz/vim-signify'
+
 call plug#end()
 
 filetype plugin indent on
@@ -115,6 +111,7 @@ set ignorecase
 
 " Enable syntax highlighting.
 syntax on
+
 
 " Allow erasing indent.
 set backspace=indent,eol,start
@@ -175,6 +172,14 @@ set mouse=a
 
 " nice colors even on OSX
 colorscheme desert
+
+" Nice status line
+highlight IsModified    ctermbg=darkred
+fu! MyStatusLine() abort
+    return (&mod? '%#IsModified#% %m%F:' : ' %m%F:') . tagbar#currenttag("%s","","f","scoped-stl")
+endfu
+set statusline=%!MyStatusLine()
+
 " desert looks different on OSX and Linux, make Normal consistent.
 highlight Normal ctermfg=LightGray ctermbg=Black
 " default diffchange color is flashy magenta
@@ -216,7 +221,6 @@ set spellcapcheck=
 "
 set omnifunc=syntaxcomplete#Complete
 
-
 " Load installed plugins.
 packloadall
 " Yamlfix is good but indentation doesnt agree with yamllint
@@ -232,7 +236,7 @@ let g:ale_fixers = {
 let g:ale_linters = {
       \'python': ['ruff', 'mypy'],
       \'yaml': ['yamllint'],
-      \'cpp': ['clang'],
+      \'cpp': ['clang', 'cppcheck'],
       \'markdown': ['pandoc'],
       \'sh': ['shellcheck'],
       \}
@@ -365,6 +369,7 @@ nnoremap <leader>jd :YcmCompleter GoTo<CR>
 nnoremap <leader>jr :YcmCompleter GoToReferences<CR>
 nnoremap <leader>jv :YcmCompleter GetDoc<CR>
 nnoremap <leader>jo :TagbarToggle<CR>
+
 
 " XX to write and close buffer
 nnoremap XX :w<CR>:q<CR>
