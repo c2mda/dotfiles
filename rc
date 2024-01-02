@@ -15,6 +15,7 @@ fi
 
 # Fix SSH auth socket location so agent forwarding works with tmux
 # https://blog.testdouble.com/posts/2016-11-18-reconciling-tmux-and-ssh-agent-forwarding
-if test "$SSH_AUTH_SOCK" ; then
-    ln -sf $SSH_AUTH_SOCK ~/.ssh/ssh_auth_sock
-fi
+# Update: this doesn't work when ssh between machines that share $HOME, removing.
+# if test "$SSH_AUTH_SOCK" ; then
+    # ln -sf $SSH_AUTH_SOCK ~/.ssh/ssh_auth_sock
+# fi
