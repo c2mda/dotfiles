@@ -25,9 +25,6 @@ HISTTIMEFORMAT="%d%m%Y %T "
 #########################################################################
 RED='\033[0;31m'
 GREEN='\033[0;32m'
-YELLOW='\033[0;33m'
-BLUE='\033[0;34m'
-MAGENTA='\033[0;35m'
 NC='\033[0m' # No color.
 
 function is_macbook()
@@ -43,25 +40,22 @@ function is_macbook()
   return 1
 }
 
-function get_color()
+function get_hncolor()
 {
-  local HN_COLORS=("$RED" "$GREEN" "$YELLOW" "$BLUE" "$MAGENTA")
-  # Compare only letters.
-  local compare="${HOSTNAME//[^[:alpha:]]/}"
-  # Compare in lowercase.
-  local compare=${compare,,}
-  # Check if local machine.
-  if [[ "${compare}" = *"xmbppersom"* ]]; then
-    echo "${RED}"
+  if $(is_macbook); then
+    echo $RED
   else
-    local num_colors=${#HN_COLORS[@]}
-    local color_index
-    color_index=$(hostname | cksum | cut -f1 -d' ')
-    echo "${HN_COLORS[$((color_index%num_colors-1))]}"
+    local color_indices=(31 32 33 34 35 36 90 91 92 93 94 95 96 97)
+    # Hash the hostname into an int.
+    local color_index=$(hostname | cksum | cut -f1 -d' ')
+    # Index into color_indices with int.
+    local num_colors=${#color_indices[@]}
+    color_index=$((color_index%num_colors-1))
+    echo "\033[0;${color_indices[color_index]}m"
   fi
 }
-color=$(get_color)
-PS1="${color}\u@\h>>>${GREEN}\w ${NC}\n "
+
+PS1="$(get_hncolor)\u@\h>>>${GREEN}\w ${NC}\n "
 
 # Save and reload the history after each command finishes
 export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
