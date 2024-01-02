@@ -89,7 +89,7 @@ if ! apt-cache policy | grep deadsnakes &>/dev/null; then
   echo "Adding deadsnakes/ppa to repositories."
   sudo add-apt-repository --yes ppa:deadsnakes/ppa
 fi
-maybe_apt_install python3.10 awscli python3.10-venv jq rclone libffi-dev python3.10-dev docker.io
+maybe_apt_install python3.10 awscli python3.10-venv jq rclone libffi-dev python3.10-dev docker.io universal-ctags
 
 # Make available on other machines sharing $HOME
 fd_installed=$(maybe_apt_install "fd-find")
