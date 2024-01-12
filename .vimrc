@@ -229,14 +229,14 @@ packloadall
 let g:ale_fixers = {
       \'python': ['trim_whitespace', 'ruff', 'autopep8', 'autoflake', 'isort', 'black'],
       \'yaml': ['trim_whitespace', 'prettier'],
-      \'cpp': ['clang-format'],
+      \'cpp': [],
       \'markdown': ['pandoc'],
       \'sh': ['trim_whitespace', 'remove_trailing_lines', 'shfmt'],
       \}
 let g:ale_linters = {
       \'python': ['ruff', 'mypy'],
       \'yaml': ['yamllint'],
-      \'cpp': ['clang', 'cppcheck'],
+      \'cpp': [],
       \'markdown': ['pandoc'],
       \'sh': ['shellcheck'],
       \}
@@ -349,6 +349,11 @@ augroup END
 
 " Compact tagbar
 let g:tagbar_compact = 1
+
+" Set tmux pane title to vim so tmux knows it's vim even under ssh.
+" Need to also change tmux to recognize this.
+" autocmd VimEnter * silent :!printf "\033]2;vim\033\\"
+" autocmd VimLeave * silent :!printf "\033]2;blah\033\\"
 
 """"""" SHORTCUTS
 
