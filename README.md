@@ -3,7 +3,10 @@
     cd ~
     git clone git@github.com:c2mda/dotfiles.git
     cd dotfiles
-    ./install.sh
+    ./install.sh --full
+
+--full includes installing new packages via apt
+for non-dev temporary machines, use ./install.sh to avoid apt
 
 # User setup
 

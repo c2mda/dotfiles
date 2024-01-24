@@ -6,6 +6,14 @@ if [[ "${TRACE-0}" == "1" ]]; then
     set -o xtrace
 fi
 
+# Full or minimal setup (full: no apt-get)
+# Default to minimal
+if [[ ${1:--minimal} == "--full" ]]; then
+  minimal=false
+else
+  minimal=true
+fi
+
 # Assumes Ubuntu / apt.
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
@@ -33,6 +41,7 @@ apt_updated=false
 
 # Returns true (0 in bash) if any package has been installed.
 function maybe_apt_install() {
+  if [ "$minimal" == "true" ]; then return 0; fi
   local any_install=false
   for package_name in "$@"; do
     local status
@@ -50,6 +59,7 @@ function maybe_apt_install() {
   if [ $any_install = true ]; then return 0; fi
   return 1
 }
+
 
 # Note: also needs to upload ssh private key.
 git config --global user.email "cyprien.de.masson@gmail.com"
@@ -78,6 +88,27 @@ if [[ ! -a "$HOME/.fzf" ]]; then
   # shellcheck source=/home/cyprien/.bashrc
   source ~/.bashrc
 fi
+
+# Vim
+mkdir -p ~/.vim/swap
+if [ ! -e ~/.vim/autoload/plug.vim ]; then
+  echo "Installing vimplug"
+  curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+  # Install vim plugins.
+  vim +PlugInstall +qall
+
+  # Some stuff needed for YouCompleteMe in vim.
+  # A bit heavy but couldn't find a good lighter autocomplete.
+  if ! ( ls ~/.vim/plugged/YouCompleteMe/third_party/ycmd/ycm_core.*.so &> /dev/null ) ; then
+    cd ~/.vim/plugged/YouCompleteMe || exit
+    python3 install.py
+  fi
+fi
+
+########### END MINIMAL SETUP #########
+if [ "$minimal" == "true" ]; then exit 0; fi
 
 # Debian packages.
 
@@ -121,24 +152,6 @@ if ! command -v bat --version &> /dev/null; then
   # Bat is installed as batcat due to name clash.
   mkdir -p ~/.local/bin
   ln -s /usr/bin/batcat ~/.local/bin/bat
-fi
-
-# Vim
-mkdir -p ~/.vim/swap
-if [ ! -e ~/.vim/autoload/plug.vim ]; then
-  echo "Installing vimplug"
-  curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
-  # Install vim plugins.
-  vim +PlugInstall +qall
-
-  # Some stuff needed for YouCompleteMe in vim.
-  # A bit heavy but couldn't find a good lighter autocomplete.
-  if ! ( ls ~/.vim/plugged/YouCompleteMe/third_party/ycmd/ycm_core.*.so &> /dev/null ) ; then
-    cd ~/.vim/plugged/YouCompleteMe || exit
-    python3 install.py
-  fi
 fi
 
 # Cloud
