@@ -377,7 +377,6 @@ nnoremap <leader>jo :TagbarToggle<CR>
 
 
 " XX to write and close buffer
-nnoremap XX :w<CR>:q<CR>
+nnoremap XX :w<CR>:bd<CR>
 " XQ to close buffer without saving
-nnoremap XQ :q!<CR>
-
+nnoremap XQ :bd!<CR>
