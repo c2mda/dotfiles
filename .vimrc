@@ -376,7 +376,26 @@ nnoremap <leader>jv :YcmCompleter GetDoc<CR>
 nnoremap <leader>jo :TagbarToggle<CR>
 
 
+fun! WriteIfNotEmptyQuitIfLast(save) abort
+  let bytes = wordcount().bytes
+  let fn = expand('%')
+  " If we're on a meaningful buffer (not empty default)
+  " maybe write.
+  if (len(fn) > 0 || bytes > 1) && a:save
+    write
+    bdelete
+  else
+    bdelete!
+  endif
+
+  " If no buffer left quit.
+  let bufcnt = len(filter(range(1, bufnr('$')), 'buflisted(v:val)'))
+  if bufcnt < 2
+      quit!
+  endif
+endfun
+
 " XX to write and close buffer
-nnoremap XX :w<CR>:bd<CR>
+nnoremap XX :call WriteIfNotEmptyQuitIfLast(1)<CR>
 " XQ to close buffer without saving
-nnoremap XQ :bd!<CR>
+nnoremap XQ :call WriteIfNotEmptyQuitIfLast(0)<CR>
