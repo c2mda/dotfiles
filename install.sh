@@ -120,7 +120,7 @@ if ! apt-cache policy | grep deadsnakes &>/dev/null; then
   echo "Adding deadsnakes/ppa to repositories."
   sudo add-apt-repository --yes ppa:deadsnakes/ppa
 fi
-maybe_apt_install python3.10 awscli python3.10-venv jq rclone libffi-dev python3.10-dev docker.io universal-ctags
+maybe_apt_install python3.10 awscli python3.10-venv jq libffi-dev python3.10-dev docker.io 
 
 # Make available on other machines sharing $HOME
 fd_installed=$(maybe_apt_install "fd-find")
@@ -140,6 +140,12 @@ if [ "$rg_installed" = true ]; then
   cp /usr/bin/rg $HOME/bin/
 fi
 
+# Make available on other machines sharing $HOME
+ctags_installed = $(maybe_apt_install "universal-ctags")
+if [ "$ctags_installed" = true ]; then
+  cp /usr/bin/ctags $HOME/bin/
+fi
+
 pip_installed=$(maybe_apt_install "python3-pip")
 if [ "$pip_installed" = true ]; then
   pip install --quiet autopep8 reorder-python-imports pylint black ruff poetry mypy flake8 isort
@@ -150,8 +156,7 @@ if ! command -v bat --version &> /dev/null; then
   maybe_apt_install bat
 
   # Bat is installed as batcat due to name clash.
-  mkdir -p ~/.local/bin
-  ln -s /usr/bin/batcat ~/.local/bin/bat
+  cp /usr/bin/batcat $HOME/bin/bat
 fi
 
 # Cloud
