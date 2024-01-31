@@ -27,12 +27,6 @@ Plug 'preservim/nerdcommenter'
 " To move through names with _
 Plug 'bkad/CamelCaseMotion'
 
-" Maktaba: Google vimscript utility.
-Plug 'google/vim-maktaba'
-
-" Codefmt: Google code formatter.
-Plug 'google/vim-codefmt'
-
 " Vim tmux navigator
 Plug 'christoomey/vim-tmux-navigator'
 
@@ -133,8 +127,6 @@ if has('persistent_undo')
   set undofile
 endif
 
-" Map \fc to FormatCode
-" map <leader>fc :FormatCode <CR>
 map <leader>fc :ALEFix<CR>
 
 map <leader>sc :write<CR>:ALELint<CR>
@@ -174,16 +166,16 @@ set mouse=a
 colorscheme desert
 
 " Nice status line
-highlight IsModified    ctermbg=darkred
+highlight IsModified ctermbg=darkred guibg=darkred
 fu! MyStatusLine() abort
     return (&mod? '%#IsModified#% %m%F:' : ' %m%F:') . tagbar#currenttag("%s","","f","scoped-stl")
 endfu
 set statusline=%!MyStatusLine()
 
 " desert looks different on OSX and Linux, make Normal consistent.
-highlight Normal ctermfg=LightGray ctermbg=Black
+highlight Normal ctermfg=LightGray ctermbg=Black guifg=LightGray guibg=Black
 " default diffchange color is flashy magenta
-highlight DiffChange ctermbg=LightYellow
+highlight DiffChange ctermbg=LightYellow guibg=LightYellow
 
 " white on black menu for autocompletion -- must be after colorscheme
 highlight Pmenu ctermfg=15 ctermbg=0 guifg=#ffffff guibg=#000000
@@ -274,10 +266,10 @@ hi clear SpellBad
 hi clear SpellLocal
 hi clear SpellRare
 hi clear SpellCap
-hi SpellBad cterm=underline
-hi SpellLocal cterm=underline
-hi SpellRare cterm=underline
-hi SpellCap cterm=underline
+hi SpellBad cterm=underline gui=underline
+hi SpellLocal cterm=underline gui=underline
+hi SpellRare cterm=underline gui=underline
+hi SpellCap cterm=underline gui=underline
 
 " Set the shell interactive, to allows bash aliases such as fd
 " Actually setting the shell as interactive causes problems: when running
@@ -399,3 +391,9 @@ endfun
 nnoremap XX :call WriteIfNotEmptyQuitIfLast(1)<CR>
 " XQ to close buffer without saving
 nnoremap XQ :call WriteIfNotEmptyQuitIfLast(0)<CR>
+
+" Enable 24 bit colors, see https://www.reddit.com/r/vim/comments/g04s8u/how_to_enable_true_color_support_in_vim/
+" or :help xterm-true-color
+let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
+set termguicolors
