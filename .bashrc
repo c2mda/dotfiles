@@ -43,7 +43,14 @@ shopt -s histappend
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=1000000
 HISTFILESIZE=2000000
-HISTTIMEFORMAT="%d%m%Y %T "
+
+# Save multi line command in single entry.
+shopt -s cmdhist 
+
+# Save multi line command with embedded newlines.
+shopt -s lithist
+
+HISTTIMEFORMAT="%F %T "
 
 #########################################################################
 ############################# PROMPT ####################################
@@ -243,14 +250,14 @@ fi
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/app/cyprien2/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+__conda_setup="$('/home/cyprien2/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/app/cyprien2/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/app/cyprien2/miniconda3/etc/profile.d/conda.sh"
+    if [ -f "/home/cyprien2/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/cyprien2/miniconda3/etc/profile.d/conda.sh"
     else
-        export PATH="/app/cyprien2/miniconda3/bin:$PATH"
+        export PATH="/home/cyprien2/miniconda3/bin:$PATH"
     fi
 fi
 unset __conda_setup
