@@ -5,6 +5,31 @@ case $- in
 *) return;;
 esac
 
+
+#########################################################################
+############################# ALIASES ###################################
+#########################################################################
+
+# Clear screen for real
+alias cls='printf "\033c" && [ -n "$TMUX" ] && tmux clear-history'
+
+# XClip
+alias xclip='xclip -selection c'
+
+# On debian fd is renamed fdfind
+# Don't specify path to fdfind, so that we can use the ~/.local/bin
+# version when on a remote machine that has only ~ mounted.
+if [[ $OSTYPE == 'linux-gnu' ]]; then
+  FDFIND='fdfind'
+else
+  FDFIND='fd'
+fi
+alias fd="$FDFIND"
+
+# Enable color support of ls and also add handy aliases
+alias ls='ls --color=auto -alh'
+
+
 #########################################################################
 ############################# HISTORY ###################################
 #########################################################################
