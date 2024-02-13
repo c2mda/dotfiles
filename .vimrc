@@ -167,6 +167,9 @@ colorscheme desert
 
 " Nice status line
 highlight IsModified ctermbg=darkred guibg=darkred
+highlight StatusLine ctermfg=Gray guifg=Gray ctermbg=Black guibg=Black
+highlight NonText term=bold cterm=bold ctermfg=4 gui=bold ctermfg=LightBlue guifg=LightBlue guibg=Black ctermbg=Black
+
 fu! MyStatusLine() abort
     return (&mod? '%#IsModified#% %m%F:' : ' %m%F:') . tagbar#currenttag("%s","","f","scoped-stl")
 endfu
