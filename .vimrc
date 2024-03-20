@@ -318,6 +318,7 @@ autocmd BufWinEnter * silent! :%foldopen!
 " To allow YCM to use local python interpreter in virtual_env
 " From :help youcompleteme-configuring-through-vim-options
 " Also needs a ~/global_extra_conf.py file.
+" https://github.com/ycm-core/YouCompleteMe?tab=readme-ov-file#configuring-through-vim-options
 let g:ycm_python_interpreter_path = ''
 let g:ycm_python_sys_path = []
 let g:ycm_extra_conf_vim_data = [
@@ -394,6 +395,14 @@ endfun
 nnoremap XX :call WriteIfNotEmptyQuitIfLast(1)<CR>
 " XQ to close buffer without saving
 nnoremap XQ :call WriteIfNotEmptyQuitIfLast(0)<CR>
+
+" C-S to save file
+" https://stackoverflow.com/questions/3446320/in-vim-how-to-map-save-to-ctrl-s
+" update is no-op if buffer not modified
+noremap <silent> <C-S>          :update<CR>
+vnoremap <silent> <C-S>         <C-C>:update<CR>
+inoremap <silent> <C-S>         <C-O>:update<CR>
+
 
 " Enable 24 bit colors, see https://www.reddit.com/r/vim/comments/g04s8u/how_to_enable_true_color_support_in_vim/
 " or :help xterm-true-color
