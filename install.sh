@@ -125,25 +125,25 @@ maybe_apt_install python3.10 awscli python3.10-venv jq libffi-dev python3.10-dev
 # Make available on other machines sharing $HOME
 fd_installed=$(maybe_apt_install "fd-find")
 if [ "$fd_installed" = true ]; then
-  cp /usr/bin/fdfind $HOME/bin/
+  cp /usr/bin/fdfind "$HOME/bin/"
 fi
 
 # Make available on other machines sharing $HOME
 rclone_installed=$(maybe_apt_install "rclone")
 if [ "$rclone_installed" = true ]; then
-  cp /bin/rclone $HOME/bin/
+  cp /bin/rclone "$HOME/bin/"
 fi
  
 # Make available on other machines sharing $HOME
 rg_installed=$(maybe_apt_install "ripgrep")
 if [ "$rg_installed" = true ]; then
-  cp /usr/bin/rg $HOME/bin/
+  cp /usr/bin/rg "$HOME/bin/"
 fi
 
 # Make available on other machines sharing $HOME
-ctags_installed = $(maybe_apt_install "universal-ctags")
+ctags_installed=$(maybe_apt_install "universal-ctags")
 if [ "$ctags_installed" = true ]; then
-  cp /usr/bin/ctags $HOME/bin/
+  cp /usr/bin/ctags "$HOME/bin/"
 fi
 
 pip_installed=$(maybe_apt_install "python3-pip")
@@ -156,7 +156,7 @@ if ! command -v bat --version &> /dev/null; then
   maybe_apt_install bat
 
   # Bat is installed as batcat due to name clash.
-  cp /usr/bin/batcat $HOME/bin/bat
+  cp /usr/bin/batcat "$HOME/bin/bat"
 fi
 
 # Cloud
@@ -184,7 +184,7 @@ if ! command -v gh --version &> /dev/null; then
   && sudo apt update \
   && sudo apt install gh -y
   # Make available on other machines sharing $HOME
-  cp /usr/bin/gh $HOME/bin/
+  cp /usr/bin/gh "$HOME/bin/"
 fi
 
 # Tanka
