@@ -70,7 +70,6 @@ maybe_copy "${SCRIPT_DIR}/.vimrc" ~/.vimrc
 maybe_copy "${SCRIPT_DIR}/.bash_profile" ~/.bash_profile
 maybe_copy "${SCRIPT_DIR}/.bashrc" ~/.bashrc
 maybe_copy "${SCRIPT_DIR}/.tmux.conf" ~/.tmux.conf
-maybe_copy "${SCRIPT_DIR}/.pylintrc" ~/.pylintrc
 maybe_copy "${SCRIPT_DIR}/rc" ~/.ssh/rc
 
 # shellcheck source=/home/cyprien/.bash_profile
@@ -125,30 +124,30 @@ maybe_apt_install python3.10 awscli python3.10-venv jq libffi-dev python3.10-dev
 # Make available on other machines sharing $HOME
 fd_installed=$(maybe_apt_install "fd-find")
 if [ "$fd_installed" = true ]; then
-  cp /usr/bin/fdfind "$HOME/bin/"
+  cp /usr/bin/fdfind "$HOME/.local/bin/"
 fi
 
 # Make available on other machines sharing $HOME
 rclone_installed=$(maybe_apt_install "rclone")
 if [ "$rclone_installed" = true ]; then
-  cp /bin/rclone "$HOME/bin/"
+  cp /bin/rclone "$HOME/.local/bin/"
 fi
  
 # Make available on other machines sharing $HOME
 rg_installed=$(maybe_apt_install "ripgrep")
 if [ "$rg_installed" = true ]; then
-  cp /usr/bin/rg "$HOME/bin/"
+  cp /usr/bin/rg "$HOME/.local/bin/"
 fi
 
 # Make available on other machines sharing $HOME
 ctags_installed=$(maybe_apt_install "universal-ctags")
 if [ "$ctags_installed" = true ]; then
-  cp /usr/bin/ctags "$HOME/bin/"
+  cp /usr/bin/ctags "$HOME/.local/bin/"
 fi
 
 pip_installed=$(maybe_apt_install "python3-pip")
 if [ "$pip_installed" = true ]; then
-  pip install --quiet autopep8 reorder-python-imports pylint black ruff poetry mypy flake8 isort
+  pip install --quiet autopep8 reorder-python-imports black ruff poetry mypy flake8 isort
 fi
 
 if ! command -v bat --version &> /dev/null; then
@@ -156,7 +155,7 @@ if ! command -v bat --version &> /dev/null; then
   maybe_apt_install bat
 
   # Bat is installed as batcat due to name clash.
-  cp /usr/bin/batcat "$HOME/bin/bat"
+  cp /usr/bin/batcat "$HOME/.local/bin/bat"
 fi
 
 # Cloud
@@ -164,7 +163,7 @@ if [[ ! -a /usr/local/bin/kubectl ]]; then
   echo "Installing kubectl"
   curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
   chmod +x ./kubectl
-  sudo mv ./kubectl /usr/local/bin/kubectl
+  sudo mv ./kubectl "$HOME/.local/bin/"
   mkdir -p ~/.kube
 fi
 
@@ -184,12 +183,12 @@ if ! command -v gh --version &> /dev/null; then
   && sudo apt update \
   && sudo apt install gh -y
   # Make available on other machines sharing $HOME
-  cp /usr/bin/gh "$HOME/bin/"
+  cp /usr/bin/gh "$HOME/.local/bin/"
 fi
 
 # Tanka
 if ! command -v tk --version &> /dev/null; then
   echo "Installing tanka"
-  sudo curl -Lo /usr/local/bin/tk https://github.com/grafana/tanka/releases/latest/download/tk-linux-amd64
-  sudo chmod a+x /usr/local/bin/tk
+  sudo curl -Lo "$HOME/.local/bin/tk" https://github.com/grafana/tanka/releases/latest/download/tk-linux-amd64
+  sudo chmod a+x "$HOME/.local/bin/tk"
 fi
