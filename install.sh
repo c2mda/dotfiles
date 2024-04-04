@@ -147,7 +147,7 @@ fi
 
 pip_installed=$(maybe_apt_install "python3-pip")
 if [ "$pip_installed" = true ]; then
-  pip install --quiet autopep8 reorder-python-imports black ruff poetry mypy flake8 isort
+  pip install --user --quiet autopep8 reorder-python-imports black ruff poetry mypy flake8 isort
 fi
 
 if ! command -v bat --version &> /dev/null; then
