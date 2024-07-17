@@ -359,7 +359,7 @@ nnoremap <C-q> :Lines<CR>
 nnoremap <leader>vb :Buffers<CR>
 
 " Search everywhere with ripgrep+FZF
-nnoremap <leader>ff :Rg<CR>
+nnoremap <C-_> :Rg<CR>
 
 nnoremap <leader>jd :YcmCompleter GoTo<CR>
 nnoremap <leader>jr :YcmCompleter GoToReferences<CR>

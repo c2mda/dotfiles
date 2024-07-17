@@ -105,7 +105,7 @@ export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 [ -f /usr/share/doc/fzf/examples/completion.bash ] && source /usr/share/doc/fzf/examples/completion.bash
 
 # Set FZF default search to be exact
-export FZF_DEFAULT_OPTS='--exact --bind "ctrl-a:select-all,ctrl-d:deselect-all,ctrl-t:toggle-all"'
+export FZF_DEFAULT_OPTS='--exact --preview-window "nohidden:wrap" --bind "ctrl-a:select-all,ctrl-d:deselect-all,ctrl-t:toggle-all"'
 export FZF_DEFAULT_COMMAND="${FDFIND} --type f --hidden --follow --exclude .git --exclude /Library --exclude \"Google Drive/.My Drive\""
 export FZF_CTRL_T_COMMAND="${FDFIND} --type f --hidden --follow --exclude .git --exclude /Library --exclude \"Google Drive/.My Drive\""
 export FZF_ALT_C_COMMAND="${FDFIND} --type d --hidden --exclude .git --exclude /Library --exclude \"Google Drive/.My Drive\""
@@ -242,25 +242,28 @@ rgfzf() {
 }
 # https://stackoverflow.com/questions/10980575/how-can-i-unbind-and-remap-c-w-in-bash
 # Need to bind both mode explicitly for it to work in both.
-bind -m vi-insert -x '"\C-w":"rgfzf"'
-bind -m vi-command -x '"\C-w":"rgfzf"'
+bind -m vi-insert -x '"\C-_":"rgfzf"'
+bind -m vi-command -x '"\C-_":"rgfzf"'
 
 # Always add primary key to ssh agent on local machine.
 if is_macbook; then
   ssh-add ~/.ssh/id_ed25519 &>/dev/null
 fi
 
+_fzf_setup_completion path git
+_fzf_setup_completion host ssh
+
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/cyprien2/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/cyprien2/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/cyprien2/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/cyprien2/miniconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
+# __conda_setup="$('/app/cyprien2/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+# if [ $? -eq 0 ]; then
+    # eval "$__conda_setup"
+# else
+    # if [ -f "/app/cyprien2/miniconda3/etc/profile.d/conda.sh" ]; then
+        # . "/app/cyprien2/miniconda3/etc/profile.d/conda.sh"
+    # else
+        # export PATH="/app/cyprien2/miniconda3/bin:$PATH"
+    # fi
+# fi
+# unset __conda_setup
 # <<< conda initialize <<<
