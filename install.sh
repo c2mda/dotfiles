@@ -75,6 +75,10 @@ maybe_copy "${SCRIPT_DIR}/rc" ~/.ssh/rc
 # shellcheck source=/home/cyprien/.bash_profile
 source "${HOME}/.bash_profile"
 
+# Tmux plugin manager
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+~/.tmux/plugins/tpm/bin/install_plugins
+
 if [ -n "${TMUX:-}" ]; then
   tmux source ~/.tmux.conf
 fi
