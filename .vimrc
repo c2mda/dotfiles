@@ -390,6 +390,9 @@ endfun
 nnoremap XX :call WriteIfNotEmptyQuitIfLast(1)<CR>
 " XQ to close buffer without saving
 nnoremap XQ :call WriteIfNotEmptyQuitIfLast(0)<CR>
+" Wq also write and quits (common typo)
+:command! Wq wq
+
 
 " C-S to save file
 " https://stackoverflow.com/questions/3446320/in-vim-how-to-map-save-to-ctrl-s

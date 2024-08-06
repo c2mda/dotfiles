@@ -92,7 +92,7 @@ function get_hncolor()
 PS1="$(get_hncolor)\u@\h>>>${GREEN}\w ${NC}\n "
 
 # Save and reload the history after each command finishes
-export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+export PROMPT_COMMAND="history -a; history -c; history -r"
 
 #########################################################################
 ############################### FZF #####################################
@@ -252,6 +252,16 @@ fi
 
 _fzf_setup_completion path git
 _fzf_setup_completion host ssh
+
+# pip install llm
+# llm install llm-claude-3
+# llm models default claude-3-5-sonnet-20240620
+# export ANTHROPIC_API_KEY=...
+claude() {
+  args="'$*'"  # Wrap every argument in a quote, as llm expects quoted string.
+  prompt="'Be very concise. User will typically ask for bash commands. If there is one obvious command, then just output that command without explanation. Only ask for clarification when needed.'"
+  llm --system "${prompt}" "${args}"  # I'll never understand bash quoting but this works.
+}
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
