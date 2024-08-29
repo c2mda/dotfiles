@@ -92,7 +92,9 @@ function get_hncolor()
 PS1="$(get_hncolor)\u@\h>>>${GREEN}\w ${NC}\n "
 
 # Save and reload the history after each command finishes
-export PROMPT_COMMAND="history -a; history -c; history -r"
+# For some reason history -a; history -n prevents me from saving multiline commands
+# export PROMPT_COMMAND="history -a; history -n; $PROMPT_COMMAND"
+export PROMPT_COMMAND="history -n; history -w; history -c; history -r"
 
 #########################################################################
 ############################### FZF #####################################
@@ -256,7 +258,7 @@ _fzf_setup_completion host ssh
 # pip install llm
 # llm install llm-claude-3
 # llm models default claude-3-5-sonnet-20240620
-# export ANTHROPIC_API_KEY=...
+# llm keys set anthropic
 claude() {
   args="'$*'"  # Wrap every argument in a quote, as llm expects quoted string.
   prompt="'Be very concise. User will typically ask for bash commands. If there is one obvious command, then just output that command without explanation. Only ask for clarification when needed.'"
@@ -277,3 +279,4 @@ claude() {
 # fi
 # unset __conda_setup
 # <<< conda initialize <<<
+#
