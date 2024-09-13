@@ -16,6 +16,8 @@ alias cls='printf "\033c" && [ -n "$TMUX" ] && tmux clear-history'
 # XClip
 alias xclip='xclip -selection c'
 
+alias vi='vim'
+
 # On debian fd is renamed fdfind
 # Don't specify path to fdfind, so that we can use the ~/.local/bin
 # version when on a remote machine that has only ~ mounted.
