@@ -8,7 +8,6 @@ set vi-cmd-mode-string "-"
 
 # Switch to block cursor before executing a command.
 set keymap vi-insert
-# RETURN: "\e\n"
 
 # Readline has a delay after pressing escape, reduce from 500ms to 50.
 set keyseq-timeout 50

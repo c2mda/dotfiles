@@ -18,5 +18,5 @@ fi
 # Update: this doesn't work when ssh between machines that share $HOME, removing.
 # Update: Actually I'd rather keep it. Just need to avoid nesting ssh.
 if test "$SSH_AUTH_SOCK" ; then
-    ln -sf $SSH_AUTH_SOCK ~/.ssh/ssh_auth_sock
+    ln -sf $SSH_AUTH_SOCK /tmp/ssh_auth_sock_cyp
 fi

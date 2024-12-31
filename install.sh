@@ -14,6 +14,9 @@ else
   minimal=true
 fi
 
+# Removes annoying interactive prompt to restart services
+export NEEDRESTART_MODE=a
+
 # Assumes Ubuntu / apt.
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
@@ -65,65 +68,102 @@ function maybe_apt_install() {
 git config --global user.email "cyprien.de.masson@gmail.com"
 git config --global user.name "Cyprien de Masson"
 
-maybe_copy "${SCRIPT_DIR}/.inputrc" ~/.inputrc
-maybe_copy "${SCRIPT_DIR}/.vimrc" ~/.vimrc
-maybe_copy "${SCRIPT_DIR}/.bash_profile" ~/.bash_profile
-maybe_copy "${SCRIPT_DIR}/.bashrc" ~/.bashrc
-maybe_copy "${SCRIPT_DIR}/.tmux.conf" ~/.tmux.conf
-maybe_copy "${SCRIPT_DIR}/rc" ~/.ssh/rc
+maybe_copy "${SCRIPT_DIR}/.inputrc" ${HOME}/.inputrc
+maybe_copy "${SCRIPT_DIR}/.vimrc" ${HOME}/.vimrc
+maybe_copy "${SCRIPT_DIR}/.bash_profile" ${HOME}/.bash_profile
+maybe_copy "${SCRIPT_DIR}/.bashrc" ${HOME}/.bashrc
+maybe_copy "${SCRIPT_DIR}/.tmux.conf" ${HOME}/.tmux.conf
+maybe_copy "${SCRIPT_DIR}/rc" ${HOME}/.ssh/rc
 
 # shellcheck source=/home/cyprien/.bash_profile
 source "${HOME}/.bash_profile"
 
 # Tmux plugin manager
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-~/.tmux/plugins/tpm/bin/install_plugins
+if [[ ! -d ${HOME}/.tmux/plugins/tpm ]]; then
+  mkdir -p ${HOME}/.tmux/plugins/tpm
+  git clone https://github.com/tmux-plugins/tpm ${HOME}/.tmux/plugins/tpm
+  ${HOME}/.tmux/plugins/tpm/bin/install_plugins
+fi
 
 if [ -n "${TMUX:-}" ]; then
-  tmux source ~/.tmux.conf
+  tmux source ${HOME}/.tmux.conf
 fi
 
 if [[ ! -a "$HOME/.fzf" ]]; then
   echo "Installing FZF"
-  git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-  ~/.fzf/install --key-bindings --completion --update-rc
+  git clone --depth 1 https://github.com/junegunn/fzf.git ${HOME}/.fzf
+  ${HOME}/.fzf/install --key-bindings --completion --update-rc
   # Reload to get key bindings.
   # shellcheck source=/home/cyprien/.bashrc
-  source ~/.bashrc
+  source ${HOME}/.bashrc
 fi
 
 # Vim
-mkdir -p ~/.vim/swap
-if [ ! -e ~/.vim/autoload/plug.vim ]; then
+mkdir -p ${HOME}/.vim/swap
+if [ ! -e ${HOME}/.vim/autoload/plug.vim ]; then
   echo "Installing vimplug"
-  curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+  curl -fLo ${HOME}/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
   # Install vim plugins.
-  vim +PlugInstall +qall
+  vi +PlugInstall +qall
 
-  # Some stuff needed for YouCompleteMe in vim.
-  # A bit heavy but couldn't find a good lighter autocomplete.
-  if ! ( ls ~/.vim/plugged/YouCompleteMe/third_party/ycmd/ycm_core.*.so &> /dev/null ) ; then
-    cd ~/.vim/plugged/YouCompleteMe || exit
-    python3 install.py
-  fi
+fi
+
+# Needed for YouCompleteMe in vim.
+# A bit heavy but couldn't find a good lighter autocomplete.
+if ! ( ls ${HOME}/.vim/plugged/YouCompleteMe/third_party/ycmd/ycm_core.*.so &> /dev/null ) ; then
+  echo "Installing YouCompleteMe"
+  cd ${HOME}/.vim/plugged/YouCompleteMe || exit
+  python3 install.py
 fi
 
 ########### END MINIMAL SETUP #########
 if [ "$minimal" == "true" ]; then exit 0; fi
 
 # Debian packages.
+sudo apt-get --yes update
+sudo apt-get --yes upgrade
+maybe_apt_install software-properties-common
 
-# Needed for YCM
-maybe_apt_install build-essential cmake vim-nox python3-dev shellcheck
+if ! vim --version | awk 'NR==1 {print ($5 >= 9.1)}'; then
+  # Build vim from source
+  echo "Building vim from source"
+  maybe_apt_install libncurses5-dev libgtk2.0-dev libatk1.0-dev libcairo2-dev libx11-dev libxpm-dev libxt-dev python2-dev python3-dev ruby-dev lua5.2 liblua5.2-dev libperl-dev git
+  sudo apt-get --yes remove vim vim-runtime gvim vim-tiny vim-common vim-gui-common vim-nox
+  cd ~ || return
+  git clone https://github.com/vim/vim.git
+  cd vim || return
+  ./configure --with-features=huge \
+              --enable-multibyte \
+              --enable-rubyinterp=yes \
+              --enable-python3interp=yes \
+              --with-python3-config-dir=$(python3-config --configdir) \
+              --enable-perlinterp=yes \
+              --enable-luainterp=yes \
+              --enable-gui=gtk2 \
+              --enable-cscope \
+              --prefix=/usr/local
+  sudo make install
+fi
 
-# Generally useful.
+pip install llm-claude-3
+llm models default claude-3-5-sonnet-20240620
+if ! llm keys | grep claude &>/dev/null; then
+  echo "Setting claude API key"
+  llm keys set claude
+fi
+
 if ! apt-cache policy | grep deadsnakes &>/dev/null; then
   echo "Adding deadsnakes/ppa to repositories."
   sudo add-apt-repository --yes ppa:deadsnakes/ppa
 fi
-maybe_apt_install python3.10 awscli python3.10-venv jq libffi-dev python3.10-dev docker.io 
+maybe_apt_install python3.10 awscli python3.10-venv jq libffi-dev python3.10-dev docker.io
+
+# Needed for YCM
+maybe_apt_install build-essential cmake python3-dev shellcheck
+
+mkdir -p $HOME/.local/bin
 
 # Make available on other machines sharing $HOME
 fd_installed=$(maybe_apt_install "fd-find")
@@ -136,7 +176,7 @@ rclone_installed=$(maybe_apt_install "rclone")
 if [ "$rclone_installed" = true ]; then
   cp /bin/rclone "$HOME/.local/bin/"
 fi
- 
+
 # Make available on other machines sharing $HOME
 rg_installed=$(maybe_apt_install "ripgrep")
 if [ "$rg_installed" = true ]; then
@@ -151,7 +191,7 @@ fi
 
 pip_installed=$(maybe_apt_install "python3-pip")
 if [ "$pip_installed" = true ]; then
-  pip install --user --quiet autopep8 reorder-python-imports black ruff poetry mypy flake8 isort
+  pip install --user --quiet autopep8 reorder-python-imports black ruff poetry mypy flake8 isort llm
 fi
 
 if ! command -v bat --version &> /dev/null; then
@@ -163,12 +203,12 @@ if ! command -v bat --version &> /dev/null; then
 fi
 
 # Cloud
-if [[ ! -a /usr/local/bin/kubectl ]]; then
+if [[ ! -a ${HOME}/.local/bin/kubectl ]]; then
   echo "Installing kubectl"
   curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
   chmod +x ./kubectl
-  sudo mv ./kubectl "$HOME/.local/bin/"
-  mkdir -p ~/.kube
+  sudo cp ./kubectl "$HOME/.local/bin/"
+  mkdir -p ${HOME}/.kube
 fi
 
 if ! command -v oci --version &> /dev/null; then
