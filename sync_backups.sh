@@ -1,11 +1,4 @@
 #!/bin/bash
-# Note that % progress, transfer speed and estimated time left are incorrect,
-# because rsync does not know ahead of time which files will be copied in
-# recursive mode.
-#
-# But you can see total transfer size in the dry run, and current transferred
-# size during the actual run.
-#
 # To deduplicate large files first:
 #
 #   brew install jdupes
@@ -27,23 +20,24 @@ if [ "$num_backups" -lt 2 ]; then
   exit
 fi
 
-function do_rsync(){
-  # --perms: preserve permissions.
-  # --recursive: copy subfolders.
-  # --times: preserve times.
-  # --whole-file: files are transferred whole, not delta.
-  # --stats: print stats at the end (number/size/etc).
-  # --exclude=".*": exclude hidden files .
-  rsync \
-      --perms \
-      --recursive \
-      --times \
-      --whole-file \
-      --stats \
-      --exclude=".*" \
-      --chmod=777 \
-      --human-readable \
-      "$@"
+function do_rclone(){
+  # copy: Copy the source to the destination. Does not transfer files that are 
+  #       identical on source and destination, testing by size and modification
+  #       time or MD5SUM. Doesn't delete files from the destination.
+  # --progress: show progress.
+  # --exclude: ignore MacOS special files.
+  # --ignore-checksum: Skip post copy check of checksums.
+  # --metadata: If set, preserve metadata when copying objects.
+  # --size-only: Skip based on size only, not modtime or checksum.
+  # --transfers: Use only one transfer.
+  rclone copy \
+    --progress \
+    --exclude ".**" \
+    --ignore-checksum \
+    --metadata \
+    --size-only \
+    --transfers 1 \
+    "$@"
 }
 
 for disk_from in "${backup_disks[@]}"; do
@@ -61,13 +55,10 @@ for disk_from in "${backup_disks[@]}"; do
       continue
     fi
 
-    # --out-format: print full path 
-    do_rsync \
-      --out-format="/%f" \
+    do_rclone \
       --dry-run \
       "$disk_from" \
-      "$disk_to" \
-      | grep -E -v "${disk_from}[^/]+/[^/]+/"  # Don't print subfolders.
+      "$disk_to"
 
     # Confirmation.
     read -p "Proceed ${disk_from} -> ${disk_to}? (y/n) " -n 1 -r
@@ -77,13 +68,7 @@ for disk_from in "${backup_disks[@]}"; do
     fi
 
     # Real run.
-    # --no-inc-recursive: build full file list first, for exact total progress.
-    # --info=name0: don't display current name.
-    # --info=progress2: accurate total progress.
-    do_rsync \
-      --no-inc-recursive \
-      --info=name0 \
-      --info=progress2 \
+    do_rclone\
       "$disk_from" \
       "$disk_to"
 
